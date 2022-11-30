@@ -10,6 +10,7 @@ import {createStore} from "redux";
 import {Provider} from "react-redux";
 import {store} from "./store/store";
 import AppWithRedux from "./AppWithRedux";
+import {createRoot} from "react-dom/client";
 
 const theme = createTheme({
     palette: {
@@ -17,13 +18,16 @@ const theme = createTheme({
         secondary: yellow,
     }
 })
-ReactDOM.render(
+
+const container = document.getElementById('root') as HTMLElement
+const root = createRoot(container);
+root.render(
     <ThemeProvider theme={theme}>
         <Provider store={store}>
             <AppWithRedux />
         </Provider>
     </ThemeProvider>
-   , document.getElementById('root'));
+);
 
 
 // If you want your app to work offline and load faster, you can change
