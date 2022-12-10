@@ -84,13 +84,6 @@ const TodoList = memo((props: TodoListPropsType) => {
     const onCompletedClickHandler = useCallback(() => props.changeTodoListFilter("completed", props.todoListId), [])
 
 
-    // const tasksList = tasks.length
-    //     ? <List>{tasks.map(getTasksListItem)}</List>
-    //     : <span>Your taskslist is empty :(</span>
-    //
-
-    //const handlerCreator = (filter: FilterValuesType) => () => props.changeTodoListFilter(filter, props.todoListId)
-
     const removeTodoList = () => props.removeTodoList(props.todoListId)
 
     const addTaskHandler = useCallback((title: string) => {
@@ -121,9 +114,7 @@ const TodoList = memo((props: TodoListPropsType) => {
                                   key={t.id}
                              tasks={t}
                 />
-                             // editTask={editItem}
-                             // changeTaskStatus={changeTaskStatus}
-                             // removeTask={removeTask}
+
             })}
             <div>
                 <ButtonWithMemo

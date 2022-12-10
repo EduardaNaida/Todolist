@@ -9,6 +9,7 @@ type InputPropsType = {
 export const Input = (props: InputPropsType) => {
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<boolean>(false)
+
     const onChangeSetLocalTitle = (e: ChangeEvent<HTMLInputElement>) => {
         error && setError(false)
         setTitle(e.currentTarget.value)
