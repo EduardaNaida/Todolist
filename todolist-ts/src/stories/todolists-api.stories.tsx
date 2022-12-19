@@ -164,13 +164,13 @@ export const UpdateTask = () => {
     const [taskId, setTaskId] = useState<string>('')
     const [title, setTitle] = useState<string>('')
 
-
-    const updateTask = () => {
-        taskAPI.updateTask(todolistId, title, taskId)
-            .then(res => {
-                setState(res.data)
-            })
-    }
+    //
+    // const updateTask = () => {
+    //     taskAPI.updateTask(todolistId, status, taskId)
+    //         .then(res => {
+    //             setState(res.data)
+    //         })
+    // }
     return <div>{JSON.stringify(state)}
         <div>
             <input placeholder={'TodolistId'} value={todolistId} onChange={(e) => {
@@ -182,7 +182,7 @@ export const UpdateTask = () => {
             <input placeholder={'Title'} value={title} onChange={(e) => {
                 setTitle(e.currentTarget.value)
             }}/>
-            <button onClick={updateTask}>Update task</button>
+            {/*<button onClick={updateTask}>Update task</button>*/}
         </div>
     </div>
 }
