@@ -4,8 +4,8 @@ import * as serviceWorker from './serviceWorker';
 import {createTheme, ThemeProvider} from '@material-ui/core/styles';
 import {indigo, yellow} from "@material-ui/core/colors";
 import {Provider} from "react-redux";
-import {store} from "./store/store";
-import AppWithRedux from "./AppWithRedux";
+import {store} from "./app/store";
+import AppWithRedux from "./app/AppWithRedux";
 import {createRoot} from "react-dom/client";
 
 const theme = createTheme({

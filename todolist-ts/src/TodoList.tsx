@@ -4,8 +4,8 @@ import BackspaceIcon from '@material-ui/icons/Backspace';
 import {EditItem} from "./components/EditItem";
 import {AddItemForm} from "./components/AddItemForm";
 import {TaskRedux} from "./TaskRedux";
-import {FilterValuesType} from "./AppWithRedux";
-import {AppDispatch} from "./store/store";
+import {FilterValuesType} from "./app/AppWithRedux";
+import {AppDispatch} from "./app/store";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {fetchTasksThunk} from "./store/tasks-reducer";
 
@@ -21,6 +21,7 @@ type TodoListPropsType = {
     removeTodoList: (todoListId: string) => void
     editTask: (todoListId: string, taskId: string, newTitle: string) => void
     editTodolist: (todoListId: string, newTitle: string) => void
+    entityStatus: string
 }
 
 // type TaskType = {
@@ -109,12 +110,12 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
                 color={'primary'}
             >
                 <EditItem title={props.title} callback={editTodolist}/>
-                <IconButton size={'small'} onClick={removeTodoList}>
+                <IconButton size={'small'} onClick={removeTodoList} disabled={props.entityStatus === 'loading'}>
                     <BackspaceIcon/>
                 </IconButton>
             </Typography>
             {/*<Input callback={addTaskHandler}/>*/}
-            <AddItemForm addItem={addTaskHandler}/>
+            <AddItemForm addItem={addTaskHandler} disabled={props.entityStatus === 'loading'}/>
 
             {tasks.map(t => {
                 return <TaskRedux todolistId={props.todoListId}

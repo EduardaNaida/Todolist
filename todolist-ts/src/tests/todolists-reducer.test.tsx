@@ -7,22 +7,22 @@ import {
     RemoveTodolistAC,
     TodolistDomainType,
     todolistReducer
-} from "./todolist-reducer";
-import {FilterValuesType} from "../AppWithRedux";
+} from "../store/todolist-reducer";
+import {FilterValuesType} from "../app/AppWithRedux";
 
 let todolistId1: string;
 let todolistId2: string;
 let startState: Array<TodolistDomainType>;
 
-beforeEach(() => {
-    todolistId1 = v1();
-    todolistId2 = v1();
-
-    startState = [
-        {id: todolistId1, title: "What to learn", filter: "all", addedDate: '', order: 1},
-        {id: todolistId2, title: "What to buy", filter: "all", addedDate: '', order: 2}
-    ]
-})
+// beforeEach(() => {
+//     todolistId1 = v1();
+//     todolistId2 = v1();
+//
+//     startState = [
+//         {id: todolistId1, title: "What to learn", filter: "all", addedDate: '', order: 1},
+//         {id: todolistId2, title: "What to buy", filter: "all", addedDate: '', order: 2}
+//     ]
+// })
 
 test('correct todolist should be removed', () => {
 

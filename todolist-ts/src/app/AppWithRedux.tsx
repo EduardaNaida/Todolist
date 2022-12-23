@@ -1,23 +1,21 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {v1} from "uuid";
-import {Input} from "./components/Input";
+import {Input} from "../components/Input";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
-    AddTodolistAC,
-    ChangeTodolistAC, changeTodosTitleThunk, createTodosThunk,
-    EditTodolistAC, getTodosThunk,
-    RemoveTodolistAC, removeTodosThunk, TodolistDomainType,
-} from "./store/todolist-reducer";
+    ChangeTodolistAC, changeTodosTitleThunk, createTodosThunk, getTodosThunk, removeTodosThunk, TodolistDomainType,
+} from "../store/todolist-reducer";
 import {
     addTaskThunk,
     removeTasksThunk,
     updateTaskThunk
-} from "./store/tasks-reducer";
-import {AppDispatch,  UseAppSelector} from "./store/store";
-import {TaskStatuses, TaskType} from "./api/todolist-api";
-import TodoList from "./TodoList";
+} from "../store/tasks-reducer";
+import {AppDispatch, UseAppSelector} from "./store";
+import {TaskStatuses, TaskType} from "../api/todolist-api";
+import TodoList from "../TodoList";
+import {LinearProgress} from "@mui/material";
+import {ErrorSnackbar} from "../components/ErrorSnackbar";
 
 
 export type FilterValuesType = "all" | "active" | "completed"
@@ -30,9 +28,10 @@ export type TasksStateType = {
 
 function AppWithRedux() {
 
+    const status = UseAppSelector(state => state.app.status)
     const dispatch = AppDispatch();
 
-    useEffect(()=> {
+    useEffect(() => {
         dispatch(getTodosThunk())
     }, [])
 
@@ -50,7 +49,7 @@ function AppWithRedux() {
         dispatch(updateTaskThunk(todoListId, taskId, {title: newTitle}))
     }, [])
 
-    const addTask = useCallback( (title: string, todoListId: string) => {
+    const addTask = useCallback((title: string, todoListId: string) => {
         dispatch(addTaskThunk(todoListId, title))
     }, [])
     const changeTaskStatus = useCallback((taskId: string, status: TaskStatuses, todoListId: string) => {
@@ -71,7 +70,7 @@ function AppWithRedux() {
     }, [dispatch])
 
     const addTodolist = useCallback((newTitle: string) => {
-       dispatch(createTodosThunk(newTitle))
+        dispatch(createTodosThunk(newTitle))
     }, [dispatch])
 
     //GUI:
@@ -87,6 +86,7 @@ function AppWithRedux() {
                         filter={tl.filter}
                         todoListId={tl.id}
                         tasks={tasks[tl.id]}
+                        entityStatus = {tl.entityStatus}
                         addTask={addTask}
                         removeTask={removeTask}
                         removeTodoList={removeTodoList}
@@ -102,6 +102,7 @@ function AppWithRedux() {
 
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <AppBar position="static">
                 <Toolbar style={{justifyContent: "space-between"}}>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -113,6 +114,7 @@ function AppWithRedux() {
                     <Button color="inherit" variant={"outlined"}>Login</Button>
                 </Toolbar>
             </AppBar>
+            {status === 'loading' && <LinearProgress color="secondary"/>}
             <Container fixed>
                 <Grid container style={{padding: '20px'}}>
                     <Input callback={addTodolist}/>
