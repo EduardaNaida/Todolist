@@ -119,7 +119,10 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
             {tasks.map(t => {
                 return <TaskRedux todolistId={props.todoListId}
                                   key={t.id}
-                             tasks={t}
+                                  tasks={t}
+                                  removeTask={props.removeTask}
+                                  changeTaskStatus={props.changeTaskStatus}
+                                  changeTaskTitle={props.editTask}
                 />
 
             })}

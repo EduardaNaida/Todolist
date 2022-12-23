@@ -6,13 +6,12 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from "@material-ui/icons";
 import {
     AddTodolistAC,
-    ChangeTodolistAC,
+    ChangeTodolistAC, changeTodosTitleThunk, createTodosThunk,
     EditTodolistAC, getTodosThunk,
-    RemoveTodolistAC, TodolistDomainType
+    RemoveTodolistAC, removeTodosThunk, TodolistDomainType,
 } from "./store/todolist-reducer";
 import {
     addTaskThunk,
-    changeTitleAC,
     removeTasksThunk,
     updateTaskThunk
 } from "./store/tasks-reducer";
@@ -45,17 +44,17 @@ function AppWithRedux() {
 
     //Tasks
     const removeTask = useCallback((taskId: string, todoListId: string) => {
-        dispatch( removeTasksThunk(taskId, todoListId))
+        dispatch(removeTasksThunk(taskId, todoListId))
     }, [])
     const editTask = useCallback((todoListId: string, taskId: string, newTitle: string) => {
-        dispatch(changeTitleAC(todoListId, taskId, newTitle))
+        dispatch(updateTaskThunk(todoListId, taskId, {title: newTitle}))
     }, [])
 
     const addTask = useCallback( (title: string, todoListId: string) => {
         dispatch(addTaskThunk(todoListId, title))
     }, [])
     const changeTaskStatus = useCallback((taskId: string, status: TaskStatuses, todoListId: string) => {
-        dispatch(updateTaskThunk(todoListId, taskId, status))
+        dispatch(updateTaskThunk(todoListId, taskId, {status}))
     }, [])
 
     //Todolist
@@ -63,17 +62,16 @@ function AppWithRedux() {
         dispatch(ChangeTodolistAC(todoListId, filter))
     }, [dispatch])
     const removeTodoList = useCallback((todoListId: string) => {
-        dispatch(RemoveTodolistAC(todoListId))
+        dispatch(removeTodosThunk(todoListId))
         delete tasks[todoListId]
     }, [dispatch])
 
     const editTodolist = useCallback((todoListId: string, newTitle: string) => {
-        dispatch(EditTodolistAC(todoListId, newTitle))
+        dispatch(changeTodosTitleThunk(todoListId, newTitle))
     }, [dispatch])
+
     const addTodolist = useCallback((newTitle: string) => {
-        const newTodolistId = v1();
-        const action = AddTodolistAC(newTodolistId, newTitle)
-        dispatch(action)
+       dispatch(createTodosThunk(newTitle))
     }, [dispatch])
 
     //GUI:

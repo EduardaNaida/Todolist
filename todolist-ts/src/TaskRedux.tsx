@@ -1,21 +1,24 @@
-import React, {ChangeEvent, FC, memo, useCallback} from 'react';
+import React, {ChangeEvent, FC} from 'react';
 import {Checkbox, IconButton, List, ListItem} from "@material-ui/core";
 import {EditItem} from "./components/EditItem";
 import BackspaceIcon from "@material-ui/icons/Backspace";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./store/store";
-import {changeTaskStatusAC, changeTitleAC, removeTaskAC} from "./store/tasks-reducer";
+import {useDispatch} from "react-redux";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
-import {Delete} from "@material-ui/icons";
 
 export type TaskPropsTypeRedux = {
     tasks: TaskType
     todolistId: string
-    // changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
-    // changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
-    // removeTask: (taskId: string, todolistId: string) => void
+    changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
+    changeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
+    removeTask: (taskId: string, todolistId: string) => void
 }
-export const TaskRedux: FC<TaskPropsTypeRedux> = ({tasks, todolistId}) => {
+export const TaskRedux: FC<TaskPropsTypeRedux> = ({
+                                                      tasks,
+                                                      todolistId,
+                                                      changeTaskStatus,
+                                                      removeTask,
+                                                      changeTaskTitle
+                                                  }) => {
     // const onClickHandler = useCallback(() => props.removeTask(props.task.id, props.todolistId), [props.task.id, props.todolistId]);
     //
     // const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -46,13 +49,12 @@ export const TaskRedux: FC<TaskPropsTypeRedux> = ({tasks, todolistId}) => {
 
     const dispatch = useDispatch();
 
-    const onClickHandler = () => dispatch(removeTaskAC(tasks.id, todolistId))
+    const onClickHandler = () => removeTask(tasks.id, todolistId)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked
-        dispatch(changeTaskStatusAC(tasks.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, todolistId))
+        changeTaskStatus(tasks.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, todolistId)
     }
-    const onTitleChangeHandler = (newTitle: string) =>
-        dispatch(changeTitleAC(todolistId, tasks.id, newTitle))
+    const onTitleChangeHandler = (newTitle: string) => changeTaskTitle(todolistId, tasks.id, newTitle)
     return (
         <div>
             <ListItem

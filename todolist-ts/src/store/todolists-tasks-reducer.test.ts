@@ -3,7 +3,7 @@ import {tasksReducer} from "./tasks-reducer";
 import {v1} from "uuid";
 import {TasksStateType} from "../AppWithRedux";
 
-test('ids should be equals', () => {
+/*test('ids should be equals', () => {
     const startTasksState: TasksStateType = {}
     const startTodolistsState: Array<TodolistDomainType> = []
 
@@ -18,4 +18,4 @@ test('ids should be equals', () => {
 
     expect(idFromTasks).toBe(action.todolistId)
     expect(idFromTodolists).toBe(action.todolistId)
-})
+})*/
