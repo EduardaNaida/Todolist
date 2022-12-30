@@ -1,8 +1,10 @@
 import React, {ChangeEvent, memo, useState} from 'react';
+import {TextField} from "@material-ui/core";
 
 type EditItemType = {
     title: string
-    callback:(newTitle: string) => void
+    callback: (newTitle: string) => void
+    disabled?: boolean
 }
 export const EditItem = memo((props: EditItemType) => {
     const [edit, setEdit] = useState(false)
@@ -12,16 +14,19 @@ export const EditItem = memo((props: EditItemType) => {
         setNewTitle(e.currentTarget.value)
     }
     const onClickHandler = () => {
-      setEdit(!edit)
+        setEdit(!edit)
         props.callback(newTitle)
     }
     // const onEnterDownAddTask = (e: KeyboardEvent<HTMLInputElement>) =>{
     //     e.key === "Enter" && props.callback(newTitle)
     //     console.log('aa')
     // }
+    console.log(props.disabled)
     return (
         edit
-            ? <input value={newTitle} autoFocus onBlur={onClickHandler} onChange={onChangeTitle}/>
+            ?
+            <input value={newTitle} autoFocus onBlur={onClickHandler} onChange={onChangeTitle}
+                   disabled={props.disabled}/>
             : <span onClick={onClickHandler}>{props.title}</span>
     );
 });

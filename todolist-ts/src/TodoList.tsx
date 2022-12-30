@@ -109,7 +109,7 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
                 style={{fontWeight: 'bold'}}
                 color={'primary'}
             >
-                <EditItem title={props.title} callback={editTodolist}/>
+                <EditItem title={props.title} callback={editTodolist} disabled={props.entityStatus === 'loading'}/>
                 <IconButton size={'small'} onClick={removeTodoList} disabled={props.entityStatus === 'loading'}>
                     <BackspaceIcon/>
                 </IconButton>
@@ -124,6 +124,7 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
                                   removeTask={props.removeTask}
                                   changeTaskStatus={props.changeTaskStatus}
                                   changeTaskTitle={props.editTask}
+                                  entityStatus={props.entityStatus}
                 />
 
             })}

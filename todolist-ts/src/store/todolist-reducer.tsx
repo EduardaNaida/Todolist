@@ -98,6 +98,10 @@ export const getTodosThunk = () => (dispatch: Dispatch) => {
             dispatch(setTodolist(r.data))
             dispatch(setAppStatusAC('succeeded'))
         })
+        .catch((e: AxiosError<ErrorResponseType>) => {
+            const error = e.response ? e.response.data.message : e.message
+            handleServerNetworkError(dispatch, error)
+        })
 }
 
 export const createTodosThunk = (title: string) => (dispatch: Dispatch) => {
@@ -113,6 +117,10 @@ export const createTodosThunk = (title: string) => (dispatch: Dispatch) => {
                 dispatch(setAppStatusAC('failed'))
             }
         })
+        .catch((e: AxiosError<ErrorResponseType>) => {
+            const error = e.response ? e.response.data.message : e.message
+            handleServerNetworkError(dispatch, error)
+        })
 }
 
 export const removeTodosThunk = (todolistId: string) => (dispatch: Dispatch) => {
@@ -122,11 +130,12 @@ export const removeTodosThunk = (todolistId: string) => (dispatch: Dispatch) => 
         .then((r) => {
             dispatch(RemoveTodolistAC(todolistId))
             dispatch(setAppStatusAC('succeeded'))
-        }).catch((e: AxiosError<ErrorResponseType>) => {
-        const error = e.response ? e.response.data.message : e.message
-        dispatch(changeTodolistEntityStatusAC(todolistId, 'idle'))
-        handleServerNetworkError(dispatch, error)
-    })
+        })
+        .catch((e: AxiosError<ErrorResponseType>) => {
+            const error = e.response ? e.response.data.message : e.message
+            dispatch(changeTodolistEntityStatusAC(todolistId, 'idle'))
+            handleServerNetworkError(dispatch, error)
+        })
 }
 type ErrorResponseType = {
     message: string,
@@ -138,6 +147,10 @@ export const changeTodosTitleThunk = (todolistId: string, title: string) => (dis
         .then((r) => {
             dispatch(EditTodolistAC(todolistId, title))
             dispatch(setAppStatusAC('succeeded'))
+        })
+        .catch((e: AxiosError<ErrorResponseType>) => {
+            const error = e.response ? e.response.data.message : e.message
+            handleServerNetworkError(dispatch, error)
         })
 }
 

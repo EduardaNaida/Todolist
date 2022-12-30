@@ -11,13 +11,15 @@ export type TaskPropsTypeRedux = {
     changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
     changeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
     removeTask: (taskId: string, todolistId: string) => void
+    entityStatus: string
 }
 export const TaskRedux: FC<TaskPropsTypeRedux> = ({
                                                       tasks,
                                                       todolistId,
                                                       changeTaskStatus,
                                                       removeTask,
-                                                      changeTaskTitle
+                                                      changeTaskTitle,
+                                                      entityStatus
                                                   }) => {
     // const onClickHandler = useCallback(() => props.removeTask(props.task.id, props.todolistId), [props.task.id, props.todolistId]);
     //
@@ -43,11 +45,9 @@ export const TaskRedux: FC<TaskPropsTypeRedux> = ({
     //     </IconButton>
     // </div>
 
-    const {id} = tasks;
 
     //let tasksRedux = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[id]);
 
-    const dispatch = useDispatch();
 
     const onClickHandler = () => removeTask(tasks.id, todolistId)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -68,10 +68,9 @@ export const TaskRedux: FC<TaskPropsTypeRedux> = ({
                 <Checkbox
                     color={'primary'}
                     onChange={onChangeHandler}
-                    // type={"checkbox"}
                     checked={tasks.status === TaskStatuses.Completed}
                 />
-                <EditItem title={tasks.title} callback={onTitleChangeHandler}/>
+                <EditItem title={tasks.title} callback={onTitleChangeHandler} disabled={entityStatus === 'loading'}/>
                 <IconButton size={'small'} onClick={onClickHandler}>
                     <BackspaceIcon/>
                 </IconButton>
