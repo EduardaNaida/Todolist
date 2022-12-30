@@ -1,8 +1,9 @@
-import {todolistAPI, TodoListType} from "../api/todolist-api";
+import {TaskType, todolistAPI, TodoListType} from "../api/todolist-api";
 import {FilterValuesType} from "../app/AppWithRedux";
 import {Dispatch} from "redux";
-import {RequestStatusType, setAppErrorAC, setAppErrorType, setAppStatusAC} from "../app/appReducer";
+import {RequestStatusType, setAppErrorAC, SetAppErrorType, setAppStatusAC} from "../app/appReducer";
 import {AxiosError} from "axios";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 export type RemoveTodolistAT = {
     type: "REMOVE-TODOLIST"
@@ -36,7 +37,7 @@ export type TodolistActionType =
     | EditTitleAT
     | setTodolistType
     | changeTodolistEntityStatusType
-    | setAppErrorType
+    | SetAppErrorType
 
 export const todolistReducer = (todoLists: Array<TodolistDomainType> = initialState, action: TodolistActionType): Array<TodolistDomainType> => {
     switch (action.type) {
@@ -68,7 +69,8 @@ export const RemoveTodolistAC = (id: string): RemoveTodolistAT => ({
 })
 
 export const AddTodolistAC = (todolist: TodoListType) => ({
-    type: 'ADD-TODOLIST', todolist} as const)
+    type: 'ADD-TODOLIST', todolist
+} as const)
 
 export const ChangeTodolistAC = (id: string, filter: FilterValuesType): ChangeTodolistFilterAT => ({
     type: 'CHANGE-TODOLIST-FILTER', todoListId: id, filter: filter
@@ -107,11 +109,7 @@ export const createTodosThunk = (title: string) => (dispatch: Dispatch) => {
                 dispatch(AddTodolistAC(item))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                if (r.data.messages.length) {
-                    dispatch(setAppErrorAC(r.data.messages[0]))
-                } else {
-                    dispatch(setAppErrorAC('Some error'))
-                }
+                handleServerAppError<{ item: TodoListType }>(dispatch, r.data)
                 dispatch(setAppStatusAC('failed'))
             }
         })
@@ -124,10 +122,10 @@ export const removeTodosThunk = (todolistId: string) => (dispatch: Dispatch) => 
         .then((r) => {
             dispatch(RemoveTodolistAC(todolistId))
             dispatch(setAppStatusAC('succeeded'))
-        }).catch((e:AxiosError<ErrorResponseType>) => {
+        }).catch((e: AxiosError<ErrorResponseType>) => {
+        const error = e.response ? e.response.data.message : e.message
         dispatch(changeTodolistEntityStatusAC(todolistId, 'idle'))
-        dispatch(setAppStatusAC('failed'))
-        dispatch(setAppErrorAC(e.message))
+        handleServerNetworkError(dispatch, error)
     })
 }
 type ErrorResponseType = {

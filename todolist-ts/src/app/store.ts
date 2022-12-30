@@ -18,7 +18,7 @@ export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
-type AppDispatchType = ThunkDispatch<AppRootStateType, any, AnyAction>
+export type AppDispatchType = ThunkDispatch<AppRootStateType, any, AnyAction>
 
 export const UseAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
 export const AppDispatch = () => useDispatch<AppDispatchType>()
