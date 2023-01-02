@@ -8,7 +8,7 @@ import {
 } from "../store/todolist-reducer";
 import {
     addTaskThunk,
-    removeTasksThunk,
+    removeTasksThunk,  TasksStateType,
     updateTaskThunk
 } from "../store/tasks-reducer";
 import {AppDispatch, UseAppSelector} from "./store";
@@ -20,11 +20,9 @@ import {ErrorSnackbar} from "../components/ErrorSnackbar";
 
 export type FilterValuesType = "all" | "active" | "completed"
 
-
-export type TasksStateType = {
-    [todoListId: string]: Array<TaskType>
-}
-
+// export type TasksStateType = {
+//     [key: string]: TaskDomainType
+// }
 
 function AppWithRedux() {
 

@@ -47,7 +47,7 @@ export const todolistReducer = (todoLists: Array<TodolistDomainType> = initialSt
             return [{...action.todolist, filter: 'all', entityStatus: 'idle'}, ...todoLists]
         }
         case "CHANGE-TODOLIST-FILTER":
-            return todoLists.map(tl => tl.id === action.todoListId ? {...tl, filter: action.filter} : tl)
+            return todoLists.map(tl => tl.id === action.todoListId ? {...tl, filter: action.filter,  entityStatus: 'idle'} : tl)
         case "EDIT-TODOLIST-TITLE":
             return todoLists.map(t => t.id === action.todoListId
                 ? {...t, title: action.newTitle}
@@ -142,11 +142,13 @@ type ErrorResponseType = {
     field: string
 }
 export const changeTodosTitleThunk = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+    dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
     dispatch(setAppStatusAC('loading'))
     todolistAPI.updateTodolist(todolistId, title)
         .then((r) => {
             dispatch(EditTodolistAC(todolistId, title))
             dispatch(setAppStatusAC('succeeded'))
+            dispatch(changeTodolistEntityStatusAC(todolistId, 'succeeded'))
         })
         .catch((e: AxiosError<ErrorResponseType>) => {
             const error = e.response ? e.response.data.message : e.message

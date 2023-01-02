@@ -7,12 +7,13 @@ import {TaskRedux} from "./TaskRedux";
 import {FilterValuesType} from "./app/AppWithRedux";
 import {AppDispatch} from "./app/store";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
-import {fetchTasksThunk} from "./store/tasks-reducer";
+import {fetchTasksThunk, TaskDomainType} from "./store/tasks-reducer";
+import {RequestStatusType} from "./app/appReducer";
 
 type TodoListPropsType = {
     todoListId: string
     title: string
-    tasks: Array<TaskType>
+    tasks: Array<TaskDomainType>
     filter: FilterValuesType
     removeTask: (taskId: string, todoListId: string) => void
     changeTodoListFilter: (filter: FilterValuesType, todoListId: string) => void
@@ -21,14 +22,8 @@ type TodoListPropsType = {
     removeTodoList: (todoListId: string) => void
     editTask: (todoListId: string, taskId: string, newTitle: string) => void
     editTodolist: (todoListId: string, newTitle: string) => void
-    entityStatus: string
+    entityStatus: RequestStatusType
 }
-
-// type TaskType = {
-//     id: string
-//     title: string
-//     isDone: boolean
-// }
 
 
 const TodoList = React.memo(function (props: TodoListPropsType) {
@@ -101,6 +96,7 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
         props.editTodolist(props.todoListId, title)
     }, [props.editTodolist, props.todoListId])
 
+    console.log(props.entityStatus, 'todo')
     return (
         <div style={{width: '250px'}}>
             <Typography
@@ -124,7 +120,7 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
                                   removeTask={props.removeTask}
                                   changeTaskStatus={props.changeTaskStatus}
                                   changeTaskTitle={props.editTask}
-                                  entityStatus={props.entityStatus}
+                                  entityStatus={t.entityStatus}
                 />
 
             })}

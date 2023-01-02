@@ -1,9 +1,9 @@
 import React, {ChangeEvent, FC} from 'react';
-import {Checkbox, IconButton, List, ListItem} from "@material-ui/core";
+import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {EditItem} from "./components/EditItem";
 import BackspaceIcon from "@material-ui/icons/Backspace";
-import {useDispatch} from "react-redux";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {RequestStatusType} from "./app/appReducer";
 
 export type TaskPropsTypeRedux = {
     tasks: TaskType
@@ -11,7 +11,7 @@ export type TaskPropsTypeRedux = {
     changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
     changeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
     removeTask: (taskId: string, todolistId: string) => void
-    entityStatus: string
+    entityStatus: RequestStatusType
 }
 export const TaskRedux: FC<TaskPropsTypeRedux> = ({
                                                       tasks,
@@ -55,6 +55,7 @@ export const TaskRedux: FC<TaskPropsTypeRedux> = ({
         changeTaskStatus(tasks.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, todolistId)
     }
     const onTitleChangeHandler = (newTitle: string) => changeTaskTitle(todolistId, tasks.id, newTitle)
+    console.log(entityStatus, 'task')
     return (
         <div>
             <ListItem
@@ -69,9 +70,10 @@ export const TaskRedux: FC<TaskPropsTypeRedux> = ({
                     color={'primary'}
                     onChange={onChangeHandler}
                     checked={tasks.status === TaskStatuses.Completed}
+                    disabled={entityStatus === 'loading'}
                 />
                 <EditItem title={tasks.title} callback={onTitleChangeHandler} disabled={entityStatus === 'loading'}/>
-                <IconButton size={'small'} onClick={onClickHandler}>
+                <IconButton size={'small'} onClick={onClickHandler} disabled={entityStatus === 'loading'}>
                     <BackspaceIcon/>
                 </IconButton>
             </ListItem>

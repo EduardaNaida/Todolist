@@ -25,8 +25,11 @@ export const EditItem = memo((props: EditItemType) => {
     return (
         edit
             ?
-            <input value={newTitle} autoFocus onBlur={onClickHandler} onChange={onChangeTitle}
-                   disabled={props.disabled}/>
+            <TextField value={newTitle}
+                       onChange={onChangeTitle}
+                       autoFocus
+                       onBlur={onClickHandler}
+                       disabled={props.disabled}/>
             : <span onClick={onClickHandler}>{props.title}</span>
     );
 });
