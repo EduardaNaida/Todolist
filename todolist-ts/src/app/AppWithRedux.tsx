@@ -16,13 +16,12 @@ import {TaskStatuses, TaskType} from "../api/todolist-api";
 import TodoList from "../TodoList";
 import {LinearProgress} from "@mui/material";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
+import {Route, Routes} from "react-router-dom";
+import {Login} from "../features/Login";
 
 
 export type FilterValuesType = "all" | "active" | "completed"
 
-// export type TasksStateType = {
-//     [key: string]: TaskDomainType
-// }
 
 function AppWithRedux() {
 
@@ -114,6 +113,17 @@ function AppWithRedux() {
             </AppBar>
             {status === 'loading' && <LinearProgress color="secondary"/>}
             <Container fixed>
+                {/*<Routes>*/}
+                {/*    <Route path= '/' element={<TodoList todoListId={} title={}*/}
+                {/*                                        tasks={}*/}
+                {/*                                        filter={}*/}
+                {/*                                        removeTask={}*/}
+                {/*                                        changeTodoListFilter={}*/}
+                {/*                                        addTask={}*/}
+                {/*                                        changeTaskStatus={}*/}
+                {/*                                        removeTodoList={}*/}
+                {/*                                        editTask={} editTodolist={} entityStatus={}/>}/>*/}
+                {/*</Routes>*/}
                 <Grid container style={{padding: '20px'}}>
                     <Input callback={addTodolist}/>
                     {/*<AddItemForm addItem={addTodolist}/>*/}
@@ -122,6 +132,7 @@ function AppWithRedux() {
                     {todoListComponents}
                 </Grid>
             </Container>
+            <Login/>
         </div>
     );
 }
