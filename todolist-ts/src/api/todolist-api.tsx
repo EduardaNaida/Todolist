@@ -1,6 +1,5 @@
 import axios, {AxiosResponse} from 'axios'
 import React from 'react'
-import {RequestStatusType} from "../app/appReducer";
 
 export type TodoListType = {
     id: string
@@ -67,6 +66,13 @@ export type ResponseTaskType<D> = {
     data: D
 }
 
+export type LoginParamsType = {
+  email: string,
+  password: string,
+  rememberMe?: boolean,
+  captcha?: boolean
+}
+
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
@@ -108,4 +114,10 @@ export const taskAPI = {
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
     },
+}
+
+export const authAPI = {
+  login(data: LoginParamsType){
+    return instance.post<ResponseType<{userId: number}>>('auth/login', data)
+  }
 }

@@ -1,12 +1,12 @@
 import React, {useCallback, memo, useEffect} from 'react';
-import {Button, IconButton, List, ListItem, Typography, PropTypes} from "@material-ui/core";
+import {Button, IconButton, Typography, PropTypes} from "@material-ui/core";
 import BackspaceIcon from '@material-ui/icons/Backspace';
 import {EditItem} from "./components/EditItem";
 import {AddItemForm} from "./components/AddItemForm";
 import {TaskRedux} from "./TaskRedux";
 import {FilterValuesType} from "./app/AppWithRedux";
 import {AppDispatch} from "./app/store";
-import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {TaskStatuses} from "./api/todolist-api";
 import {fetchTasksThunk, TaskDomainType} from "./store/tasks-reducer";
 import {RequestStatusType} from "./app/appReducer";
 

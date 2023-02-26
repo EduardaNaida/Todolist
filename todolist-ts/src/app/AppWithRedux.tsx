@@ -12,12 +12,11 @@ import {
     updateTaskThunk
 } from "../store/tasks-reducer";
 import {AppDispatch, UseAppSelector} from "./store";
-import {TaskStatuses, TaskType} from "../api/todolist-api";
+import {TaskStatuses} from "../api/todolist-api";
 import TodoList from "../TodoList";
 import {LinearProgress} from "@mui/material";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
-import {Route, Routes} from "react-router-dom";
-import {Login} from "../features/Login";
+import {Login} from "../features/Login/Login";
 
 
 export type FilterValuesType = "all" | "active" | "completed"
