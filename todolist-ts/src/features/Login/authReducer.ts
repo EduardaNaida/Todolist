@@ -1,7 +1,9 @@
 import { Dispatch } from 'redux'
 import {AppActionsType, setAppStatusAC} from "../../app/appReducer";
-import {authAPI, LoginParamsType} from "../../api/todolist-api";
+import {authAPI, LoginParamsType, TaskType} from "../../api/todolist-api";
 import {AppDispatchType} from "../../app/store";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import axios, {AxiosError} from "axios";
 
 const initialState = {
   isLoggedIn: false
@@ -22,20 +24,25 @@ export const setIsLoggedInAC = (value: boolean) =>
 
 // thunks
 export const loginTC = (data: LoginParamsType) => async (dispatch: AppDispatchType) => {
-  //dispatch(setAppStatusAC('loading'))
+  dispatch(setAppStatusAC('loading'))
 
   try {
-    console.log(data)
     const response = await authAPI.login(data);
-    console.log(response)
      if (response.data.resultCode === 0 ) {
+       dispatch(setIsLoggedInAC(true))
        dispatch(setAppStatusAC('succeeded'))
+     } else {
+       handleServerAppError<{ userId: number }>(dispatch, response.data)
+       dispatch(setAppStatusAC('failed'))
      }
   }
-  catch (e){
-
+  catch (error){
+    if (axios.isAxiosError<AxiosError<{ message: string }>>(error)) {
+      const err = error.response ? error.response.data.message : error.message
+      handleServerNetworkError(dispatch, err);
+    }
   }
-  //dispatch(setAppStatusAC('loading'))
+
 }
 
 // types

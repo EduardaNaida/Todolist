@@ -7,22 +7,25 @@ import {Provider} from "react-redux";
 import {store} from "./app/store";
 import AppWithRedux from "./app/AppWithRedux";
 import {createRoot} from "react-dom/client";
+import {BrowserRouter, HashRouter} from "react-router-dom";
 
 const theme = createTheme({
-    palette: {
-        primary: indigo,
-        secondary: yellow,
-    }
+  palette: {
+    primary: indigo,
+    secondary: yellow,
+  }
 })
 
 const container = document.getElementById('root') as HTMLElement
 const root = createRoot(container);
 root.render(
-    <ThemeProvider theme={theme}>
-        <Provider store={store}>
-            <AppWithRedux />
-        </Provider>
-    </ThemeProvider>
+  <ThemeProvider theme={theme}>
+    <HashRouter>
+      <Provider store={store}>
+        <AppWithRedux/>
+      </Provider>
+    </HashRouter>
+  </ThemeProvider>
 );
 
 

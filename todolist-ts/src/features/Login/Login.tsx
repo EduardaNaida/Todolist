@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -7,9 +7,12 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {AppDispatch, AppDispatchType} from "../../app/store";
+import {AppDispatch, AppRootStateType} from "../../app/store";
 import {loginTC} from "./authReducer";
 import {useFormik} from "formik";
+import {useSelector} from "react-redux";
+import {Navigate} from "react-router-dom";
+import {Reddit} from "@material-ui/icons";
 
 type FormikErrorType = {
   email?: string
@@ -20,9 +23,9 @@ type FormikErrorType = {
 export const Login = () => {
 
   const dispatch = AppDispatch();
-  // const handleSubmit = () => {
-  //   dispatch(loginTC())
-  // }
+
+  //const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
 
   const formik = useFormik({
     initialValues: {
@@ -43,12 +46,16 @@ export const Login = () => {
       return errors
     },
     onSubmit: values => {
-      console.log(values)
       dispatch(loginTC({...values}))
-      //formik.resetForm()
+      formik.resetForm()
     },
   })
 
+  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+  if (isLoggedIn) {
+    return <Navigate to={'/'}/>
+  }
+  console.log(isLoggedIn, 'isLogged')
 
   return <Grid container justifyContent={'center'}>
     <Grid item justifyContent={'center'}>

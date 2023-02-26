@@ -73,6 +73,12 @@ export type LoginParamsType = {
   captcha?: boolean
 }
 
+export type AuthParamsType = {
+  id: number,
+  email: string,
+  login: string
+}
+
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
@@ -119,5 +125,8 @@ export const taskAPI = {
 export const authAPI = {
   login(data: LoginParamsType){
     return instance.post<ResponseType<{userId: number}>>('auth/login', data)
+  },
+  me(){
+    return instance.get<ResponseType<AuthParamsType>>('auth/me')
   }
 }
