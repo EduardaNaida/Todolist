@@ -1,42 +1,36 @@
 import React, {useCallback, useEffect} from 'react';
-import './App.css';
-import {Input} from "../components/Input";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
-import {Menu} from "@material-ui/icons";
+import '../../app/App.css';
+import {Input} from "../../components/Input";
+import {Grid, Paper} from "@material-ui/core";
 import {
   ChangeTodolistAC, changeTodosTitleThunk, createTodosThunk, getTodosThunk, removeTodosThunk, TodolistDomainType,
-} from "../store/todolist-reducer";
+} from "../../store/todolist-reducer";
 import {
   addTaskThunk,
   removeTasksThunk, TasksStateType,
   updateTaskThunk
-} from "../store/tasks-reducer";
-import {AppDispatch, AppRootStateType, UseAppSelector} from "./store";
-import {TaskStatuses} from "../api/todolist-api";
-import TodoList from "../TodoList";
-import {LinearProgress} from "@mui/material";
-import {ErrorSnackbar} from "../components/ErrorSnackbar";
+} from "../../store/tasks-reducer";
+import {AppDispatch, AppRootStateType, UseAppSelector} from "../../app/store";
+import {TaskStatuses} from "../../api/todolist-api";
+import TodoList from "./Todolist/TodoList";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
-import {initializeAppTC} from "./appReducer";
-import {Main} from "../components/Main/main";
+import {initializeAppTC} from "../../app/appReducer";
 
 
 export type FilterValuesType = "all" | "active" | "completed"
 
 
-function AppWithRedux() {
+function TodolistList() {
 
-  const status = UseAppSelector(state => state.app.status)
   const dispatch = AppDispatch();
 
-  //const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
   useEffect(() => {
-    // if (!isLoggedIn){
-    //   return;
-    // }
-    dispatch(getTodosThunk())
-    dispatch(initializeAppTC())
+    if (isLoggedIn){
+      dispatch(getTodosThunk())
+    }
   }, [])
 
   const todoLists = UseAppSelector<Array<TodolistDomainType>>(state =>
@@ -60,7 +54,7 @@ function AppWithRedux() {
     dispatch(updateTaskThunk(todoListId, taskId, {status}))
   }, [])
 
-  //Todolist
+  //TodolistList
   const changeTodoListFilter = useCallback((filter: FilterValuesType, todoListId: string) => {
     dispatch(ChangeTodolistAC(todoListId, filter))
   }, [dispatch])
@@ -104,48 +98,49 @@ function AppWithRedux() {
     )
   })
 
-  // if (!isLoggedIn) {
-  //   return <Navigate to={'/login'}/>
-  // }
+  if (!isLoggedIn) {
+    return <Navigate to={'/login'}/>
+  }
 
   return (
-    <div className="App">
-      <ErrorSnackbar/>
-      <AppBar position="static">
-        <Toolbar style={{justifyContent: "space-between"}}>
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <Menu/>
-          </IconButton>
-          <Typography variant="h6">
-            Todolists
-          </Typography>
-          <Button color="inherit" variant={"outlined"}>Login</Button>
-        </Toolbar>
-      </AppBar>
-      {status === 'loading' && <LinearProgress color="secondary"/>}
-      <Container fixed>
-        {/*<Routes>*/}
-        {/*    <Route path= '/' element={<TodoList todoListId={} title={}*/}
-        {/*                                        tasks={}*/}
-        {/*                                        filter={}*/}
-        {/*                                        removeTask={}*/}
-        {/*                                        changeTodoListFilter={}*/}
-        {/*                                        addTask={}*/}
-        {/*                                        changeTaskStatus={}*/}
-        {/*                                        removeTodoList={}*/}
-        {/*                                        editTask={} editTodolist={} entityStatus={}/>}/>*/}
-        {/*</Routes>*/}
+    <div>
+      {/*<ErrorSnackbar/>*/}
+      {/*/!*<AppBar position="static">*!/*/}
+      {/*/!*  <Toolbar style={{justifyContent: "space-between"}}>*!/*/}
+      {/*/!*    <IconButton edge="start" color="inherit" aria-label="menu">*!/*/}
+      {/*/!*      <Menu/>*!/*/}
+      {/*/!*    </IconButton>*!/*/}
+      {/*/!*    <Typography variant="h6">*!/*/}
+      {/*/!*      Todolists*!/*/}
+      {/*/!*    </Typography>*!/*/}
+      {/*/!*    <Button color="inherit" variant={"outlined"}>Login</Button>*!/*/}
+      {/*/!*  </Toolbar>*!/*/}
+      {/*/!*</AppBar>*!/*/}
+      {/*<Header isAuth={isLoggedIn} name={''} logout={()=>{}}/>*/}
+      {/*{status === 'loading' && <LinearProgress color="secondary"/>}*/}
+      {/*<Container fixed>*/}
+      {/*  /!*<Routes>*!/*/}
+      {/*  /!*    <Route path= '/' element={<TodoList todoListId={} title={}*!/*/}
+      {/*  /!*                                        tasks={}*!/*/}
+      {/*  /!*                                        filter={}*!/*/}
+      {/*  /!*                                        removeTask={}*!/*/}
+      {/*  /!*                                        changeTodoListFilter={}*!/*/}
+      {/*  /!*                                        addTask={}*!/*/}
+      {/*  /!*                                        changeTaskStatus={}*!/*/}
+      {/*  /!*                                        removeTodoList={}*!/*/}
+      {/*  /!*                                        editTask={} editTodolist={} entityStatus={}/>}/>*!/*/}
+      {/*  /!*</Routes>*!/*/}
         <Grid container style={{padding: '20px'}}>
           <Input callback={addTodolist}/>
         </Grid>
         <Grid container spacing={5}>
           {todoListComponents}
         </Grid>
-      </Container>
-      <Main/>
+      {/*</Container>*/}
+      {/*<Main/>*/}
     </div>
   );
 }
 
-export default AppWithRedux;
+export default TodolistList;
 

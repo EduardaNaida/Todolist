@@ -1,12 +1,13 @@
 import { Dispatch } from 'redux'
-import {AppActionsType, setAppStatusAC} from "../../app/appReducer";
-import {authAPI, LoginParamsType, TaskType} from "../../api/todolist-api";
-import {AppDispatchType} from "../../app/store";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {AppActionsType, setAppStatusAC} from "../app/appReducer";
+import {authAPI, LoginParamsType, TaskType} from "../api/todolist-api";
+import {AppDispatchType} from "../app/store";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import axios, {AxiosError} from "axios";
 
 const initialState = {
-  isLoggedIn: false
+  isLoggedIn: false,
+
 }
 type InitialStateType = typeof initialState
 
@@ -22,6 +23,11 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
 export const setIsLoggedInAC = (value: boolean) =>
   ({type: 'login/SET-IS-LOGGED-IN', value} as const)
 
+// export const setIsLoggedInAC = (email: string, isAuth: boolean) => ({
+//     type: 'login/SET-IS-LOGGED-IN',
+//     payload: { email, isAuth}
+//   } as const
+// )
 // thunks
 export const loginTC = (data: LoginParamsType) => async (dispatch: AppDispatchType) => {
   dispatch(setAppStatusAC('loading'))
@@ -46,4 +52,6 @@ export const loginTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
 }
 
 // types
-type ActionsType = ReturnType<typeof setIsLoggedInAC> | AppActionsType
+export type SetIsLoggedInType = ReturnType<typeof setIsLoggedInAC>
+
+type ActionsType = SetIsLoggedInType | AppActionsType

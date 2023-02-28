@@ -1,6 +1,6 @@
 import { removeTaskAC, tasksReducer} from '../store/tasks-reducer'
 import {AddTodolistAC, RemoveTodolistAC} from "../store/todolist-reducer";
-// import {TasksStateType} from "../app/AppWithRedux";
+// import {TasksStateType} from "../app/TodolistList";
 import {v1} from "uuid";
 //
 // let startState: TasksStateType;
@@ -141,7 +141,7 @@ import {v1} from "uuid";
 //     expect(endState['todolistId1'][1].title).toBe('JS')
 // })
 
-//Todolist
+//TodolistList
 /*
 test('new array should be added when new todolist is added', () => {
 

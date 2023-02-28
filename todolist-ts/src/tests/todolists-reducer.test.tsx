@@ -8,7 +8,7 @@ import {
     TodolistDomainType,
     todolistReducer
 } from "../store/todolist-reducer";
-import {FilterValuesType} from "../app/AppWithRedux";
+import {FilterValuesType} from "../features/TodolistList/TodolistList";
 
 let todolistId1: string;
 let todolistId2: string;
@@ -36,7 +36,7 @@ test('correct todolist should be removed', () => {
 /*
 test('correct todolist should be added', () => {
 
-    let newTodolistTitle = "New Todolist";
+    let newTodolistTitle = "New TodolistList";
 
     const endState = todolistReducer(startState, AddTodolistAC(v1(), newTodolistTitle))
     //
@@ -57,7 +57,7 @@ test('correct filter of todolist should be changed', () => {
 
 test('correct todolist should change its name', () => {
 
-    let newTodolistTitle = "New Todolist";
+    let newTodolistTitle = "New TodolistList";
 
     const endState = todolistReducer(startState, EditTodolistAC(todolistId2, newTodolistTitle));
 

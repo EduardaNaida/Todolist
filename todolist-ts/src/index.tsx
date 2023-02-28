@@ -5,9 +5,9 @@ import {createTheme, ThemeProvider} from '@material-ui/core/styles';
 import {indigo, yellow} from "@material-ui/core/colors";
 import {Provider} from "react-redux";
 import {store} from "./app/store";
-import AppWithRedux from "./app/AppWithRedux";
 import {createRoot} from "react-dom/client";
-import {BrowserRouter, HashRouter} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
+import {App} from "./app/App";
 
 const theme = createTheme({
   palette: {
@@ -20,11 +20,11 @@ const container = document.getElementById('root') as HTMLElement
 const root = createRoot(container);
 root.render(
   <ThemeProvider theme={theme}>
-    <HashRouter>
+    <BrowserRouter>
       <Provider store={store}>
-        <AppWithRedux/>
+        <App/>
       </Provider>
-    </HashRouter>
+    </BrowserRouter>
   </ThemeProvider>
 );
 

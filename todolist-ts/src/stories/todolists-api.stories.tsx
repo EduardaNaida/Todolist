@@ -10,7 +10,7 @@ const settings = {
     withCredentials: true,
     headers: {'API-KEY': 'c13fa168-cea5-4630-847d-9c0d00665f01'}
 }
-///Todolist
+///TodolistList
 export const GetTodolist = () => {
     const [state, setState] = useState<any>(null)
 

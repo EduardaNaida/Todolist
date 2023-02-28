@@ -1,9 +1,9 @@
 import React, {ChangeEvent, FC} from 'react';
 import {Checkbox, IconButton, ListItem} from "@material-ui/core";
-import {EditItem} from "./components/EditItem";
+import {EditItem} from "../../../../components/EditItem";
 import BackspaceIcon from "@material-ui/icons/Backspace";
-import {TaskStatuses, TaskType} from "./api/todolist-api";
-import {RequestStatusType} from "./app/appReducer";
+import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
+import {RequestStatusType} from "../../../../app/appReducer";
 
 export type TaskPropsTypeRedux = {
     tasks: TaskType
