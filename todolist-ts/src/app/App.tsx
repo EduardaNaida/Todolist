@@ -10,6 +10,7 @@ import {CircularProgress, LinearProgress} from "@mui/material";
 import {Container} from "@material-ui/core";
 import {useSelector} from "react-redux";
 import {initializeAppTC} from "./appReducer";
+import {logoutTC} from "../store/authReducer";
 
 
 export const App = () => {
@@ -33,11 +34,14 @@ export const App = () => {
     </div>
   }
 
+  const logout = () => {
+    dispatch(logoutTC())
+  }
+
   return (
     <div className="App">
       <ErrorSnackbar/>
-      <Header isAuth={isInitialized} name={''} logout={() => {
-      }}/>
+      <Header isAuth={isLoggedIn} name={''} logout={logout}/>
       {status === 'loading' && <LinearProgress color="secondary"/>}
       <Container fixed>
         <Routes>

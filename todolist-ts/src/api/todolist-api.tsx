@@ -128,5 +128,8 @@ export const authAPI = {
   },
   me(){
     return instance.get<ResponseType<AuthParamsType>>('auth/me')
+  },
+  logout(){
+    return instance.post<ResponseType<{}>>('auth/logout', {})
   }
 }

@@ -61,14 +61,16 @@ export const Login = () => {
       <FormControl>
         <form onSubmit={formik.handleSubmit}>
           <FormLabel>
-            <p>To log in get registered
-              <a href={'https://social-network.samuraijs.com/'}
-                 target={'_blank'}> here
-              </a>
-            </p>
-            <p>or use common test account credentials:</p>
-            <p>Email: free@samuraijs.com</p>
-            <p>Password: free</p>
+            <div style={{color: 'grey'}}>
+              <p>To log in get registered
+                <a href={'https://social-network.samuraijs.com/'}
+                   target={'_blank'}> here
+                </a>
+              </p>
+              <p>or use common test account credentials:</p>
+              <p>Email: free@samuraijs.com</p>
+              <p>Password: free</p>
+            </div>
           </FormLabel>
           <FormGroup>
             <TextField label='Email'
@@ -85,9 +87,12 @@ export const Login = () => {
             {formik.touched.password && formik.errors.password ?
               <div style={{color: 'red'}}>{formik.errors.password}</div> : null}
 
-            <FormControlLabel label={'Remember me'} control={<Checkbox {...formik.getFieldProps('rememberMe')}
-                                                                       checked={formik.values.rememberMe}/>}/>
-            <Button type={'submit'} variant={'contained'} color={'primary'}>
+            <FormControlLabel label={'Remember me'}
+                              style={{marginLeft: '2px'}}
+                              control={<Checkbox {...formik.getFieldProps('rememberMe')}
+                                                 checked={formik.values.rememberMe}/>}/>
+            <Button type={'submit'} variant={'contained'} color={'primary'}
+                    style={{marginTop: '20px', borderRadius: '4px'}}>
               Login
             </Button>
           </FormGroup>
@@ -96,3 +101,4 @@ export const Login = () => {
     </Grid>
   </Grid>
 }
+

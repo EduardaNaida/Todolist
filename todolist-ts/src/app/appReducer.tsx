@@ -39,11 +39,12 @@ const setIsInitializedAC = (value: boolean) => {
 }
 
 export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
-
+  dispatch(setAppStatusAC('loading'))
   try {
     const res = await authAPI.me()
     if (res.data.resultCode === 0) {
       dispatch(setIsLoggedInAC(true));
+      dispatch(setAppStatusAC('succeeded'))
     } else {
       handleServerAppError(dispatch, res.data)
     }
@@ -56,6 +57,7 @@ export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
   }
   finally {
     dispatch(setIsInitializedAC(true))
+    dispatch(setAppStatusAC('succeeded'))
   }
 }
 

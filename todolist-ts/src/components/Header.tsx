@@ -21,8 +21,8 @@ export const Header = (props: HeaderPropsType) => {
           Todolists
         </Typography>
         {props.isAuth
-                 ? <div> {props.name} <Button style={{color: 'white'}} onClick={props.logout}>Log out</Button></div>
-                : <NavLink to={'/login'}>Login</NavLink>}
+          ? <div> {props.name} <Button style={{color: 'white'}} onClick={props.logout}>Log out</Button></div>
+          : <NavLink to={'/login'} style={{color: 'white', textDecoration: 'none'}}>LOGIN</NavLink>}
         {/*<Button color="inherit" variant={"outlined"}>Login</Button>*/}
       </Toolbar>
     </AppBar>
