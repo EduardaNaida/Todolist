@@ -37,11 +37,11 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
   let tasks = props.tasks;
 
   if (props.filter === "completed") {
-    tasks = tasks.filter(t => t.status === TaskStatuses.New);
+    tasks = tasks.filter(t => t.status === TaskStatuses.Completed);
   }
 
   if (props.filter === "active") {
-    tasks = tasks.filter(t => t.status === TaskStatuses.Completed);
+    tasks = tasks.filter(t => t.status === TaskStatuses.New);
   }
 
   const onAllClickHandler = useCallback(() => props.changeTodoListFilter("all", props.todoListId), [])
