@@ -35,12 +35,10 @@ export const Input = (props: InputPropsType) => {
                 onKeyDown={onEnterDownAddTask}
                 label={'Title'}
                 size={'small'}
-                //className={error ? "error" : ""}
                 error={error}
                 helperText={error && 'Title is required!'}
             />
             <IconButton onClick={addTask}> <AddIcon/></IconButton>
-            {/*{errorMessage}*/}
         </div>
     );
 };

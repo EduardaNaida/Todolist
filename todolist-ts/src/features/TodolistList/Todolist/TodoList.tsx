@@ -4,7 +4,7 @@ import BackspaceIcon from '@material-ui/icons/Backspace';
 import {EditItem} from "../../../components/EditItem";
 import {AddItemForm} from "../../../components/AddItemForm";
 import {TaskRedux} from "./Task/TaskRedux";
-import {AppDispatch, AppRootStateType} from "../../../app/store";
+import {AppDispatch} from "../../../app/store";
 import {TaskStatuses} from "../../../api/todolist-api";
 import {fetchTasksThunk, TaskDomainType} from "../../../store/tasks-reducer";
 import {RequestStatusType} from "../../../app/appReducer";
@@ -74,7 +74,7 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
           <BackspaceIcon/>
         </IconButton>
       </Typography>
-      {/*<Input callback={addTaskHandler}/>*/}
+
       <AddItemForm addItem={addTaskHandler} disabled={props.entityStatus === 'loading'}/>
 
       {tasks.map(t => {

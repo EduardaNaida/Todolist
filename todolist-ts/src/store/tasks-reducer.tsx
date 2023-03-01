@@ -61,16 +61,6 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             }
         }
         case 'ADD-TASK':
-            // const newTask: TaskType = {
-            //     id: v1(),
-            //     title: action.title,
-            //     isDone: false
-            // }
-            // return {
-            //     ...state,
-            //     [action.todolistId]: [newTask, ...state[action.todolistId]]
-            //
-            // }
             return {
                 ...state,
                 [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]
@@ -81,13 +71,6 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
                 [action.todoListId]: state[action.todoListId].map(t => t.id === action.taskId
                     ? {...t, ...action.status} : t)
             }
-        // case 'CHANGE-TITLE-STATUS':
-        //     return {
-        //         ...state,
-        //         [action.todoListId]: state[action.todoListId].map(t => t.id === action.taskId
-        //             ? {...t, title: action.newTitle}
-        //             : t)
-        //     }
         case 'ADD-TODOLIST' :
             return {
                 ...state,
@@ -137,10 +120,6 @@ export const addTaskAC = (task: TaskDomainType) => {
 export const changeTaskStatusAC = (taskId: string, status: UpdateDomainTaskModelType, todoListId: string) => {
     return {type: 'CHANGE-TASK-STATUS', taskId, status, todoListId} as const
 }
-
-// export const changeTitleAC = (todoListId: string, taskId: string, newTitle: string) => {
-//     return {type: 'CHANGE-TITLE-STATUS', todoListId, taskId, newTitle: newTitle,} as const
-// }
 
 export const setTasksAC = (tasks: TaskDomainType[], todolistId: string) => {
     return {

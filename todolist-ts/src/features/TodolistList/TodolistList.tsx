@@ -15,7 +15,6 @@ import {TaskStatuses} from "../../api/todolist-api";
 import TodoList from "./Todolist/TodoList";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
-import {initializeAppTC} from "../../app/appReducer";
 
 
 export type FilterValuesType = "all" | "active" | "completed"
@@ -28,7 +27,7 @@ function TodolistList() {
   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
   useEffect(() => {
-    if (isLoggedIn){
+    if (isLoggedIn) {
       dispatch(getTodosThunk())
     }
   }, [])
@@ -79,7 +78,6 @@ function TodolistList() {
       <Grid item key={tl.id}>
         <Paper style={{width: '250px', padding: '20px'}}>
           <TodoList
-            // todolist={tl}
             title={tl.title}
             filter={tl.filter}
             todoListId={tl.id}
@@ -104,40 +102,12 @@ function TodolistList() {
 
   return (
     <div>
-      {/*<ErrorSnackbar/>*/}
-      {/*/!*<AppBar position="static">*!/*/}
-      {/*/!*  <Toolbar style={{justifyContent: "space-between"}}>*!/*/}
-      {/*/!*    <IconButton edge="start" color="inherit" aria-label="menu">*!/*/}
-      {/*/!*      <Menu/>*!/*/}
-      {/*/!*    </IconButton>*!/*/}
-      {/*/!*    <Typography variant="h6">*!/*/}
-      {/*/!*      Todolists*!/*/}
-      {/*/!*    </Typography>*!/*/}
-      {/*/!*    <Button color="inherit" variant={"outlined"}>Login</Button>*!/*/}
-      {/*/!*  </Toolbar>*!/*/}
-      {/*/!*</AppBar>*!/*/}
-      {/*<Header isAuth={isLoggedIn} name={''} logout={()=>{}}/>*/}
-      {/*{status === 'loading' && <LinearProgress color="secondary"/>}*/}
-      {/*<Container fixed>*/}
-      {/*  /!*<Routes>*!/*/}
-      {/*  /!*    <Route path= '/' element={<TodoList todoListId={} title={}*!/*/}
-      {/*  /!*                                        tasks={}*!/*/}
-      {/*  /!*                                        filter={}*!/*/}
-      {/*  /!*                                        removeTask={}*!/*/}
-      {/*  /!*                                        changeTodoListFilter={}*!/*/}
-      {/*  /!*                                        addTask={}*!/*/}
-      {/*  /!*                                        changeTaskStatus={}*!/*/}
-      {/*  /!*                                        removeTodoList={}*!/*/}
-      {/*  /!*                                        editTask={} editTodolist={} entityStatus={}/>}/>*!/*/}
-      {/*  /!*</Routes>*!/*/}
-        <Grid container style={{padding: '20px'}}>
-          <Input callback={addTodolist}/>
-        </Grid>
-        <Grid container spacing={5}>
-          {todoListComponents}
-        </Grid>
-      {/*</Container>*/}
-      {/*<Main/>*/}
+      <Grid container style={{padding: '20px'}}>
+        <Input callback={addTodolist}/>
+      </Grid>
+      <Grid container spacing={5}>
+        {todoListComponents}
+      </Grid>
     </div>
   );
 }

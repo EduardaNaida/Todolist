@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 import {AppActionsType, setAppStatusAC} from "../app/appReducer";
-import {authAPI, LoginParamsType, TaskType} from "../api/todolist-api";
+import {authAPI, LoginParamsType} from "../api/todolist-api";
 import {AppDispatchType} from "../app/store";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import axios, {AxiosError} from "axios";

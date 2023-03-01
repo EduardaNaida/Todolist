@@ -17,11 +17,6 @@ export const EditItem = memo((props: EditItemType) => {
         setEdit(!edit)
         props.callback(newTitle)
     }
-    // const onEnterDownAddTask = (e: KeyboardEvent<HTMLInputElement>) =>{
-    //     e.key === "Enter" && props.callback(newTitle)
-    //     console.log('aa')
-    // }
-    console.log(props.disabled)
     return (
         edit
             ?

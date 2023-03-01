@@ -1,5 +1,5 @@
 import {Provider} from "react-redux";
-import {AppRootStateType, store} from "../app/store";
+import {AppRootStateType} from "../app/store";
 import React from "react";
 import { combineReducers, createStore } from 'redux'
 import { v1 } from 'uuid'

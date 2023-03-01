@@ -23,15 +23,7 @@ export const Header = (props: HeaderPropsType) => {
         {props.isAuth
           ? <div> {props.name} <Button style={{color: 'white'}} onClick={props.logout}>Log out</Button></div>
           : <NavLink to={'/login'} style={{color: 'white', textDecoration: 'none'}}>LOGIN</NavLink>}
-        {/*<Button color="inherit" variant={"outlined"}>Login</Button>*/}
       </Toolbar>
     </AppBar>
-    // <header className={s.header}>
-    //   <div className={s.loginBlock}>
-    //     {props.isAuth
-    //       ? <div className={s.itemBlock}> {props.login} <Button onClick={props.logout}>Log out</Button></div>
-    //       : <NavLink to={'/login'}>Login</NavLink>}
-    //   </div>
-    // </header>
   );
 };
