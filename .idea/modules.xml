@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../-samurai-way/samurai-way/.idea/-samurai-way.iml" filepath="$PROJECT_DIR$/../-samurai-way/samurai-way/.idea/-samurai-way.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Todolist.iml" filepath="$PROJECT_DIR$/.idea/Todolist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../cards_project/.idea/cards_project.iml" filepath="$PROJECT_DIR$/../cards_project/.idea/cards_project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../homeworks/.idea/homeworks.iml" filepath="$PROJECT_DIR$/../homeworks/.idea/homeworks.iml" />
+      <module fileurl="file://$USER_HOME$/it-incubator1/.idea/it-incubator1.iml" filepath="$USER_HOME$/it-incubator1/.idea/it-incubator1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../profile-react/.idea/profile-react.iml" filepath="$PROJECT_DIR$/../profile-react/.idea/profile-react.iml" />
     </modules>
   </component>
 </project>

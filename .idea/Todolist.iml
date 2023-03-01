@@ -8,5 +8,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="homeworks" />
+    <orderEntry type="module" module-name="it-incubator1" />
+    <orderEntry type="module" module-name="-samurai-way" />
+    <orderEntry type="module" module-name="profile-react" />
+    <orderEntry type="module" module-name="cards_project" />
   </component>
 </module>
