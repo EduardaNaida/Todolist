@@ -50,7 +50,7 @@ export const Login = () => {
   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
   if (isLoggedIn) {
-    return <Navigate to={'/'}/>
+    return <Navigate to={'/Todolist/'}/>
   }
 
   return <Grid container justifyContent={'center'}>
