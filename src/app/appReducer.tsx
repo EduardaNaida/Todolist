@@ -30,9 +30,7 @@ const slice = createSlice({
   }
 })
 
-export const setAppStatusAC = slice.actions.setAppStatusAC;
-export const setAppErrorAC = slice.actions.setAppErrorAC;
-export const setIsInitializedAC = slice.actions.setIsInitializedAC;
+export const {setAppStatusAC, setAppErrorAC, setIsInitializedAC} = slice.actions;
 
 export const appReducer = slice.reducer;
 
