@@ -51,17 +51,22 @@ export const fetchTasksThunk = createAsyncThunk('tasks/fetchTasksThunk', async(t
         })
 })
 
+export const removeTasksThunk = createAsyncThunk('tasks/removeTasksThunk', async(payload:{taskId: string, todolistId: string}, thunkAPI)=>{
+    thunkAPI.dispatch(setAppStatusAC({value: 'loading'}))
+    thunkAPI.dispatch(changeTaskEntityStatusAC({todoListId: payload.todolistId, taskId: payload.taskId, entityStatus: 'loading'}))
+    return taskAPI.deleteTask(payload.todolistId, payload.taskId)
+        .then((res) => {
+            thunkAPI.dispatch(setAppStatusAC({value: 'succeeded'}))
+            return {taskId:payload.taskId, todolistId: payload.todolistId}
+        }).finally(() => {
+            thunkAPI.dispatch(changeTaskEntityStatusAC({todoListId: payload.todolistId, taskId: payload.taskId, entityStatus: 'succeeded'}))
+    })
+})
+
 const slice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        removeTaskAC(state, action: PayloadAction<{taskId: string, todolistId: string}>){
-            const tasks = state[action.payload.todolistId];
-            const index = tasks.findIndex(task => task.id === action.payload.taskId)
-            if (index > -1) {
-                tasks.splice(index, 1)
-            }
-      },
       addTaskAC(state, action: PayloadAction<{task: TaskDomainType}>) {
         state[action.payload.task.todoListId].unshift(action.payload.task)
 
@@ -96,25 +101,20 @@ const slice = createSlice({
         builder.addCase(fetchTasksThunk.fulfilled, (state, action) => {
          state[action.payload.todolistId] = action.payload.tasks
           })
+          builder.addCase(removeTasksThunk.fulfilled, (state, action) => {
+            const tasks = state[action.payload.todolistId];
+            const index = tasks.findIndex(task => task.id === action.payload.taskId)
+            if (index > -1) {
+                tasks.splice(index, 1)
+            }
+             })
     }
  })
 
 
 export const tasksReducer = slice.reducer;
-export const {removeTaskAC, addTaskAC, changeTaskEntityStatusAC, changeTaskStatusAC} = slice.actions;
+export const {addTaskAC, changeTaskEntityStatusAC, changeTaskStatusAC} = slice.actions;
 
-
-export const removeTasksThunk = (taskId: string, todolistId: string) => (dispatch: AppDispatchType) => {
-    dispatch(setAppStatusAC({value: 'loading'}))
-    dispatch(changeTaskEntityStatusAC({todoListId: todolistId, taskId, entityStatus: 'loading'}))
-    taskAPI.deleteTask(todolistId, taskId)
-        .then((res) => {
-            dispatch(removeTaskAC({taskId, todolistId}))
-            dispatch(setAppStatusAC({value: 'succeeded'}))
-        }).finally(() => {
-        dispatch(changeTaskEntityStatusAC({todoListId: todolistId, taskId, entityStatus: 'succeeded'}))
-    })
-}
 
 
 export const addTaskThunk = (todolistId: string, title: string) => async (dispatch: AppDispatchType) => {

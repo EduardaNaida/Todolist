@@ -1,4 +1,4 @@
-import { removeTaskAC, tasksReducer} from '../store/tasks-reducer'
+import { tasksReducer} from '../store/tasks-reducer'
 import {AddTodolistAC, RemoveTodolistAC} from "../store/todolist-reducer";
 // import {TasksStateType} from "../app/TodolistList";
 import {v1} from "uuid";

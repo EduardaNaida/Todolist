@@ -39,8 +39,8 @@ function TodolistList() {
 
 
   //Tasks
-  const removeTask = useCallback((taskId: string, todoListId: string) => {
-    dispatch(removeTasksThunk(taskId, todoListId))
+  const removeTask = useCallback((taskId: string, todolistId: string) => {
+    dispatch(removeTasksThunk({taskId, todolistId}))
   }, [])
   const editTask = useCallback((todoListId: string, taskId: string, newTitle: string) => {
     dispatch(updateTaskThunk(todoListId, taskId, {title: newTitle}))
