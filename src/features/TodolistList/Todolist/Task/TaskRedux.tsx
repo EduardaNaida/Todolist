@@ -1,36 +1,56 @@
-import React, {ChangeEvent, FC} from 'react';
+import React, {ChangeEvent, FC, memo, useCallback} from 'react';
 import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {EditItem} from "../../../../components/EditItem";
 import BackspaceIcon from "@material-ui/icons/Backspace";
 import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
-import {RequestStatusType} from "../../../../app/appReducer";
+import {updateTaskThunk} from "../../../../store/tasks-reducer";
+import {AppDispatch} from "../../../../app/store";
 
 export type TaskPropsTypeRedux = {
     tasks: TaskType
     todolistId: string
-    changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
-    changeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
     removeTask: (taskId: string, todolistId: string) => void
-    entityStatus: RequestStatusType
+
 }
-export const TaskRedux: FC<TaskPropsTypeRedux> = ({
+export const TaskRedux: FC<TaskPropsTypeRedux> = memo(({
                                                       tasks,
                                                       todolistId,
-                                                      changeTaskStatus,
-                                                      removeTask,
-                                                      changeTaskTitle,
-                                                      entityStatus
+                                                      removeTask
                                                   }) => {
 
 
 
-    const onClickHandler = () => removeTask(tasks.id, todolistId)
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        let newIsDoneValue = e.currentTarget.checked
-        changeTaskStatus(tasks.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, todolistId)
-    }
-    const onTitleChangeHandler = (newTitle: string) => changeTaskTitle(todolistId, tasks.id, newTitle)
+  const {entityStatus} = tasks;
+  const dispatch = AppDispatch();
 
+    const onClickHandler = () => removeTask(tasks.id, todolistId)
+    // const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    //     let newIsDoneValue = e.currentTarget.checked
+    //     changeTaskStatus(tasks.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, todolistId)
+    // }
+    //const onTitleChangeHandler = (newTitle: string) => changeTaskTitle(todolistId, tasks.id, newTitle)
+
+  const editTask = useCallback(
+    (newTitle: string) => {
+      const newTask = { ...tasks, title: newTitle };
+      console.log(tasks)
+
+      dispatch(updateTaskThunk(newTask));
+    },
+    [updateTaskThunk, tasks]
+  );
+  const changeTaskStatus = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+
+      const newTask = {
+        ...tasks,
+        status: e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New,
+      };
+
+      dispatch(updateTaskThunk(newTask));
+    },
+    [updateTaskThunk, tasks]
+  );
     return (
         <div>
             <ListItem
@@ -43,15 +63,15 @@ export const TaskRedux: FC<TaskPropsTypeRedux> = ({
                 className={tasks.status === TaskStatuses.Completed ? "isDone" : "notIsDone"}>
                 <Checkbox
                     color={'primary'}
-                    onChange={onChangeHandler}
+                    onChange={changeTaskStatus}
                     checked={tasks.status === TaskStatuses.Completed}
                     disabled={entityStatus === 'loading'}
                 />
-                <EditItem title={tasks.title} callback={onTitleChangeHandler} disabled={entityStatus === 'loading'}/>
+                <EditItem title={tasks.title} callback={editTask} disabled={entityStatus === 'loading'}/>
                 <IconButton size={'small'} onClick={onClickHandler} disabled={entityStatus === 'loading'}>
                     <BackspaceIcon/>
                 </IconButton>
             </ListItem>
         </div>
     );
-};
+});
