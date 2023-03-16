@@ -11,7 +11,7 @@ import {
   TodolistDomainType,
 } from "../../store/todolist-reducer";
 import {
-  addTaskThunk,
+  addTaskThunk, fetchTasksThunk,
   removeTasksThunk,
   TasksStateType,
 } from "../../store/tasks-reducer";
@@ -28,6 +28,9 @@ function TodolistList() {
   const isLoggedIn = useSelector<AppRootStateType, boolean>(
     (state) => state.auth.isLoggedIn
   );
+  const todoLists = UseAppSelector<Array<TodolistDomainType>>(
+    (state) => state.todoLists
+  );
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -35,10 +38,7 @@ function TodolistList() {
     }
   }, []);
 
-  const todoLists = UseAppSelector<Array<TodolistDomainType>>(
-    (state) => state.todoLists
-  );
-  const tasks = UseAppSelector<TasksStateType>((state) => state.tasks);
+  const tasks = UseAppSelector((state) => state.tasks);
 
   //Tasks
   const removeTask = useCallback((taskId: string, todolistId: string) => {
@@ -58,23 +58,23 @@ function TodolistList() {
     [dispatch]
   );
   const removeTodoList = useCallback(
-    (todoListId: string) => {
-      dispatch(removeTodosThunk(todoListId));
-      delete tasks[todoListId];
+    (todolistId: string) => {
+      dispatch(removeTodosThunk({todolistId}));
+      delete tasks[todolistId];
     },
     [dispatch]
   );
 
   const editTodolist = useCallback(
-    (todoListId: string, newTitle: string) => {
-      dispatch(changeTodosTitleThunk(todoListId, newTitle));
+    (todolistId: string, title: string) => {
+      dispatch(changeTodosTitleThunk({todolistId, title}));
     },
     [dispatch]
   );
 
   const addTodolist = useCallback(
     (newTitle: string) => {
-      dispatch(createTodosThunk(newTitle));
+      dispatch(createTodosThunk({title: newTitle}));
     },
     [dispatch]
   );

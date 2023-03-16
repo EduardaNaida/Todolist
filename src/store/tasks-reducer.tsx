@@ -10,9 +10,7 @@ import {
   handleServerNetworkError,
 } from "../utils/error-utils";
 import {
-  AddTodolistAC,
-  RemoveTodolistAC,
-  setTodolist,
+  createTodosThunk, getTodosThunk, removeTodosThunk
 } from "./todolist-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
@@ -34,17 +32,18 @@ const initialState: TasksStateType = {};
 
 export const fetchTasksThunk = createAsyncThunk(
   "tasks/fetchTasksThunk",
-  async (todolistId: string, thunkAPI) => {
-    thunkAPI.dispatch(setAppStatusAC({value: "loading"}));
-    return taskAPI.getTask(todolistId).then((res) => {
-      const tasks = res.data.items;
-      const domainTasks: TaskDomainType[] = tasks.map((task) => ({
-        ...task,
-        entityStatus: "idle",
-      }));
-      thunkAPI.dispatch(setAppStatusAC({value: "succeeded"}));
-      return {tasks: domainTasks, todolistId};
-    });
+  async (todolistId: string, {dispatch, rejectWithValue}) => {
+    dispatch(setAppStatusAC({value: "loading"}));
+
+    try {
+      const response = await taskAPI.getTask(todolistId)
+      dispatch(setAppStatusAC({value: "succeeded"}));
+      return {tasks: response.data.items, todolistId};
+    } catch (e) {
+      return rejectWithValue(null)
+    } finally {
+      dispatch(setAppStatusAC({value: "succeeded"}));
+    }
   }
 );
 
@@ -68,7 +67,15 @@ export const removeTasksThunk = createAsyncThunk(
         thunkAPI.dispatch(setAppStatusAC({value: "succeeded"}));
         return {taskId: payload.taskId, todolistId: payload.todolistId};
       }
-    } catch {
+    } catch (error) {
+      if (axios.isAxiosError<AxiosError<{ message: string }>>(error)) {
+        const err = error.response
+          ? error.response.data.message
+          : error.message;
+        handleServerNetworkError(thunkAPI.dispatch, err);
+        return thunkAPI.rejectWithValue(null)
+      }
+      return thunkAPI.rejectWithValue(null)
     } finally {
       thunkAPI.dispatch(
         changeTaskEntityStatusAC({
@@ -90,7 +97,8 @@ export const addTaskThunk = createAsyncThunk(
       const res = await taskAPI.createTask(payload.todolistId, payload.title);
       if (res.data.resultCode === Result_Code.SUCCESS) {
         thunkAPI.dispatch(setAppStatusAC({value: "succeeded"}));
-        return {task: {...res.data.data.item}, entityStatus: 'succeeded'};
+        //return {task: {...res.data.data.item}, entityStatus: 'succeeded'};
+        return res.data.data.item
       } else {
         handleServerAppError<{ item: TaskType }>(thunkAPI.dispatch, res.data);
         thunkAPI.dispatch(setAppStatusAC({value: "failed"}));
@@ -172,19 +180,19 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(AddTodolistAC, (state, action) => {
+      .addCase(createTodosThunk.fulfilled, (state, action) => {
         state[action.payload.todolist.id] = [];
       })
-      .addCase(setTodolist, (state, action) => {
-        action.payload.todos.forEach((tl: any) => {
+      .addCase(getTodosThunk.fulfilled, (state, action) => {
+        action.payload.todolists.forEach((tl: any) => {
           state[tl.id] = [];
         });
       })
-      .addCase(RemoveTodolistAC, (state, action) => {
+      .addCase(removeTodosThunk.fulfilled, (state, action) => {
         delete state[action.payload.todolistId];
       })
       .addCase(fetchTasksThunk.fulfilled, (state, action) => {
-        state[action.payload.todolistId] = action.payload.tasks;
+         state[action.payload.todolistId] = action.payload.tasks;
       })
       .addCase(removeTasksThunk.fulfilled, (state, action) => {
         if (action.payload) {
@@ -198,7 +206,7 @@ const slice = createSlice({
         }
       })
       .addCase(addTaskThunk.fulfilled, (state, action) => {
-        state[action.payload.task.todoListId].unshift(action.payload.task)
+        state[action.payload.todoListId].unshift(action.payload)
       })
       .addCase(updateTaskThunk.fulfilled, (state, action) => {
         state[action.payload.todoListId] = state[action.payload.todoListId].map((t) =>

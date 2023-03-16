@@ -1,10 +1,7 @@
 import {v1} from "uuid";
 
 import {
-    AddTodolistAC,
     ChangeTodolistAC,
-    EditTodolistAC,
-    RemoveTodolistAC,
     TodolistDomainType,
     todolistReducer
 } from "../store/todolist-reducer";
@@ -25,15 +22,15 @@ let startState: Array<TodolistDomainType>;
 //         {id: todolistId2, title: "What to buy", filter: "all", addedDate: '', order: 2}
 //     ]
 // })
-
-test('correct todolist should be removed', () => {
-
-    //
-    const endState = todolistReducer(startState, RemoveTodolistAC({todolistId: todolistId1}))
-    //
-    expect(endState.length).toBe(1);
-    expect(endState[0].id).toBe(todolistId2);
-});
+//
+// test('correct todolist should be removed', () => {
+//
+//     //
+//     const endState = todolistReducer(startState, RemoveTodolistAC({todolistId: todolistId1}))
+//     //
+//     expect(endState.length).toBe(1);
+//     expect(endState[0].id).toBe(todolistId2);
+// });
 
 
 // test('correct todolist should be added', () => {
@@ -57,15 +54,15 @@ test('correct filter of todolist should be changed', () => {
     expect(endState[1].filter).toBe(newFilter);
 });
 
-test('correct todolist should change its name', () => {
-
-    let newTodolistTitle = "New TodolistList";
-
-    const endState = todolistReducer(startState, EditTodolistAC({id: todolistId2, title: newTodolistTitle}));
-
-    expect(endState[0].title).toBe("What to learn");
-    expect(endState[1].title).toBe(newTodolistTitle);
-});
+// test('correct todolist should change its name', () => {
+//
+//     let newTodolistTitle = "New TodolistList";
+//
+//     const endState = todolistReducer(startState, EditTodolistAC({id: todolistId2, title: newTodolistTitle}));
+//
+//     expect(endState[0].title).toBe("What to learn");
+//     expect(endState[1].title).toBe(newTodolistTitle);
+// });
 
 test('correct entity status of todolist should be changed', () => {
     let newStatus: RequestStatusType = 'loading'

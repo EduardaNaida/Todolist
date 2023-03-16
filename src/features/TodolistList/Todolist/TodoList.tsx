@@ -4,9 +4,9 @@ import BackspaceIcon from '@material-ui/icons/Backspace';
 import {EditItem} from "../../../components/EditItem";
 import {AddItemForm} from "../../../components/AddItemForm";
 import {TaskRedux} from "./Task/TaskRedux";
-import {AppDispatch} from "../../../app/store";
+import {AppDispatch, UseAppSelector} from "../../../app/store";
 import {TaskStatuses} from "../../../api/todolist-api";
-import {fetchTasksThunk, TaskDomainType} from "../../../store/tasks-reducer";
+import {fetchTasksThunk, TaskDomainType, TasksStateType} from "../../../store/tasks-reducer";
 import {RequestStatusType} from "../../../app/appReducer";
 import {FilterValuesType} from "../TodolistList";
 
@@ -28,9 +28,10 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
 
   const dispatch = AppDispatch();
 
+
   useEffect(() => {
     dispatch(fetchTasksThunk(props.todoListId))
-  }, [])
+  }, [fetchTasksThunk, props.todoListId])
 
   let tasks = props.tasks;
 

@@ -12,7 +12,7 @@ export type TaskPropsTypeRedux = {
     removeTask: (taskId: string, todolistId: string) => void
 
 }
-export const TaskRedux: FC<TaskPropsTypeRedux> = memo(({
+export const TaskRedux: FC<TaskPropsTypeRedux> =({
                                                       tasks,
                                                       todolistId,
                                                       removeTask
@@ -28,7 +28,6 @@ export const TaskRedux: FC<TaskPropsTypeRedux> = memo(({
   const editTask = useCallback(
     (newTitle: string) => {
       const newTask = { ...tasks, title: newTitle };
-      console.log(tasks)
 
       dispatch(updateTaskThunk(newTask));
     },
@@ -69,4 +68,4 @@ export const TaskRedux: FC<TaskPropsTypeRedux> = memo(({
             </ListItem>
         </div>
     );
-});
+};
