@@ -24,11 +24,6 @@ export const TaskRedux: FC<TaskPropsTypeRedux> = memo(({
   const dispatch = AppDispatch();
 
     const onClickHandler = () => removeTask(tasks.id, todolistId)
-    // const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    //     let newIsDoneValue = e.currentTarget.checked
-    //     changeTaskStatus(tasks.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, todolistId)
-    // }
-    //const onTitleChangeHandler = (newTitle: string) => changeTaskTitle(todolistId, tasks.id, newTitle)
 
   const editTask = useCallback(
     (newTitle: string) => {

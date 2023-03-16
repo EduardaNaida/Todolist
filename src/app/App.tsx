@@ -18,12 +18,10 @@ export const App = () => {
   const status = UseAppSelector(state => state.app.status)
   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
   const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
-  console.log(isInitialized)
-  console.log(isLoggedIn)
+
   const dispatch = AppDispatch();
 
   useEffect(() => {
-
     dispatch(initializeAppTC())
   }, [])
 

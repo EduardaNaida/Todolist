@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useCallback, useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import "../../app/App.css";
 import { Input } from "../../components/Input";
 import { Grid, Paper } from "@material-ui/core";
@@ -14,10 +14,8 @@ import {
   addTaskThunk,
   removeTasksThunk,
   TasksStateType,
-  updateTaskThunk,
 } from "../../store/tasks-reducer";
 import { AppDispatch, AppRootStateType, UseAppSelector } from "../../app/store";
-import { TaskStatuses } from "../../api/todolist-api";
 import TodoList from "./Todolist/TodoList";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
@@ -47,31 +45,10 @@ function TodolistList() {
     dispatch(removeTasksThunk({ taskId, todolistId }));
   }, []);
 
-  // const editTask = useCallback(
-  //   (newTitle: string) => {
-  //     const newTask = { ...tasks, title: newTitle };
-  //
-  //     dispatch(updateTaskThunk(newTask));
-  //   },
-  //   []
-  // );
 
   const addTask = useCallback((title: string, todoListId: string) => {
     dispatch(addTaskThunk({ todolistId: todoListId, title: title }));
   }, []);
-
-  // const changeTaskStatus = useCallback(
-  //   (e: ChangeEvent<HTMLInputElement>) => {
-  //
-  //     const newTask = {
-  //       ...tasks,
-  //       status: e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New,
-  //     };
-  //
-  //     dispatch(updateTaskThunk(newTask));
-  //   },
-  //   []
-  // );
 
   //TodolistList
   const changeTodoListFilter = useCallback(
