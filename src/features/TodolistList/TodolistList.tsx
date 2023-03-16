@@ -3,17 +3,12 @@ import "../../app/App.css";
 import { Input } from "../../components/Input";
 import { Grid, Paper } from "@material-ui/core";
 import {
-  ChangeTodolistAC,
-  changeTodosTitleThunk,
-  createTodosThunk,
-  getTodosThunk,
-  removeTodosThunk,
+  ChangeTodolistAC, changeTodolistTitle, createTodolist, getTodolist, removeTodolist,
   TodolistDomainType,
 } from "../../store/todolist-reducer";
 import {
-  addTaskThunk, fetchTasksThunk,
+  addTaskThunk,
   removeTasksThunk,
-  TasksStateType,
 } from "../../store/tasks-reducer";
 import { AppDispatch, AppRootStateType, UseAppSelector } from "../../app/store";
 import TodoList from "./Todolist/TodoList";
@@ -34,7 +29,7 @@ function TodolistList() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      dispatch(getTodosThunk());
+      dispatch(getTodolist());
     }
   }, []);
 
@@ -59,7 +54,7 @@ function TodolistList() {
   );
   const removeTodoList = useCallback(
     (todolistId: string) => {
-      dispatch(removeTodosThunk({todolistId}));
+      dispatch(removeTodolist({todolistId}));
       delete tasks[todolistId];
     },
     [dispatch]
@@ -67,14 +62,14 @@ function TodolistList() {
 
   const editTodolist = useCallback(
     (todolistId: string, title: string) => {
-      dispatch(changeTodosTitleThunk({todolistId, title}));
+      dispatch(changeTodolistTitle({todolistId, title}));
     },
     [dispatch]
   );
 
   const addTodolist = useCallback(
     (newTitle: string) => {
-      dispatch(createTodosThunk({title: newTitle}));
+      dispatch(createTodolist({title: newTitle}));
     },
     [dispatch]
   );

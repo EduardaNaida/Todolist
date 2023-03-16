@@ -13,8 +13,8 @@ export type TodolistDomainType = TodoListType & {
 const initialState: Array<TodolistDomainType> = []
 
 
-export const getTodosThunk = createAsyncThunk(
-  "todolist/getTodosThunk",
+export const getTodolist = createAsyncThunk(
+  "todolist/getTodolist",
   async (payload, {dispatch, rejectWithValue}) => {
     dispatch(setAppStatusAC({value: 'loading'}))
 
@@ -38,8 +38,8 @@ export const getTodosThunk = createAsyncThunk(
   }
 );
 
-export const createTodosThunk = createAsyncThunk(
-  "todolist/createTodosThunk",
+export const createTodolist = createAsyncThunk(
+  "todolist/createTodolist",
   async (payload: { title: string }, {dispatch, rejectWithValue}) => {
     dispatch(setAppStatusAC({value: 'loading'}))
 
@@ -71,8 +71,8 @@ export const createTodosThunk = createAsyncThunk(
   }
 );
 
-export const removeTodosThunk = createAsyncThunk(
-  "todolist/removeTodosThunk",
+export const removeTodolist = createAsyncThunk(
+  "todolist/removeTodolist",
   async (payload: { todolistId: string }, {dispatch, rejectWithValue}) => {
     dispatch(setAppStatusAC({value: 'loading'}))
     dispatch(changeTodolistEntityStatusAC({id: payload.todolistId, status: 'loading'}))
@@ -97,8 +97,8 @@ export const removeTodosThunk = createAsyncThunk(
   }
 );
 
-export const changeTodosTitleThunk = createAsyncThunk(
-  "todolist/changeTodosTitleThunk",
+export const changeTodolistTitle = createAsyncThunk(
+  "todolist/changeTodolistTitle",
   async (payload: { todolistId: string, title: string }, {dispatch, rejectWithValue}) => {
     dispatch(setAppStatusAC({value: 'loading'}))
     dispatch(changeTodolistEntityStatusAC({id: payload.todolistId, status: 'loading'}))
@@ -139,21 +139,21 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getTodosThunk.fulfilled, (state, action) => {
+      .addCase(getTodolist.fulfilled, (state, action) => {
         return action.payload.todolists.map((el: TodoListType) => ({
           ...el, filter: 'all', entityStatus: 'idle'
         }))
       })
-      .addCase(createTodosThunk.fulfilled, (state, action) => {
+      .addCase(createTodolist.fulfilled, (state, action) => {
         state.push({...action.payload.todolist, filter: 'all', entityStatus: 'idle'})
       })
-      .addCase(removeTodosThunk.fulfilled, (state, action) => {
+      .addCase(removeTodolist.fulfilled, (state, action) => {
         const index = state.findIndex(tl => tl.id === action.payload.todolistId);
         if (index > -1) {
           state.splice(index, 1)
         }
       })
-      .addCase(changeTodosTitleThunk.fulfilled, (state, action) => {
+      .addCase(changeTodolistTitle.fulfilled, (state, action) => {
         const index = state.findIndex(tl => tl.id === action.payload.id);
         state[index].title = action.payload.title
       })
