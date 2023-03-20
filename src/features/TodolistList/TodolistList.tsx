@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useEffect} from "react";
 import "../../app/App.css";
 import {Input} from "../../components/Input";
 import {Grid, Paper} from "@material-ui/core";
@@ -15,13 +15,9 @@ export type FilterValuesType = "all" | "active" | "completed";
 
 function TodolistList() {
 
-  const {removeTasks, addTasks} = useActions(taskActions)
   const {
-    removeTodolist,
     getTodolist,
     createTodolist,
-    changeTodolistTitle,
-    changeTodolistAC
   } = useActions(todolistActions)
 
   const isLoggedIn = useSelector<AppRootStateType, boolean>(
@@ -39,14 +35,6 @@ function TodolistList() {
 
   const tasks = UseAppSelector((state) => state.tasks);
 
-  const changeTodoListFilter = useCallback(
-    (filter: FilterValuesType, todoListId: string) => {
-      changeTodolistAC({id: todoListId, filter});
-    },
-    []
-  );
-
-
   const todoListComponents = todoLists.map((tl) => {
     return (
       <Grid item key={tl.id}>
@@ -57,11 +45,6 @@ function TodolistList() {
             todoListId={tl.id}
             tasks={tasks[tl.id]}
             entityStatus={tl.entityStatus}
-            addTask={addTasks}
-            removeTask={removeTasks}
-            removeTodoList={removeTodolist}
-            changeTodoListFilter={changeTodoListFilter}
-            editTodolist={changeTodolistTitle}
           />
         </Paper>
       </Grid>

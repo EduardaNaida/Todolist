@@ -3,27 +3,25 @@ import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {EditItem} from "../../../../components/EditItem";
 import BackspaceIcon from "@material-ui/icons/Backspace";
 import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
-import {AppDispatch, useActions} from "../../../../app/store";
+import {useActions} from "../../../../app/store";
 import {taskActions} from "../../index";
 
 export type TaskPropsTypeRedux = {
   tasks: TaskType
   todolistId: string
-  removeTask: (params: {taskId: string, todolistId: string}) => void
 
 }
 export const TaskRedux: FC<TaskPropsTypeRedux> = ({
                                                     tasks,
                                                     todolistId,
-                                                    removeTask
                                                   }) => {
 
 
   const {entityStatus} = tasks;
 
-  const {updateTask} = useActions(taskActions)
+  const {updateTask, removeTasks} = useActions(taskActions)
 
-  const onClickHandler = () => removeTask({taskId: tasks.id, todolistId})
+  const onClickHandler = () => removeTasks({taskId: tasks.id, todolistId})
 
   const editTask = useCallback(
     (newTitle: string) => {
