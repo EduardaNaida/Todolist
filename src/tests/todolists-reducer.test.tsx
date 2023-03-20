@@ -1,7 +1,7 @@
 import {v1} from "uuid";
 
 import {
-    ChangeTodolistAC,
+    changeTodolistAC,
     TodolistDomainType,
     todolistReducer
 } from "../features/TodolistList/todolist-reducer";
@@ -48,7 +48,7 @@ test('correct filter of todolist should be changed', () => {
 
     let newFilter: FilterValuesType = "completed";
 
-    const endState = todolistReducer(startState, ChangeTodolistAC({id: todolistId2, filter: newFilter}));
+    const endState = todolistReducer(startState, changeTodolistAC({id: todolistId2, filter: newFilter}));
 
     expect(endState[0].filter).toBe("all");
     expect(endState[1].filter).toBe(newFilter);

@@ -4,33 +4,33 @@ import BackspaceIcon from '@material-ui/icons/Backspace';
 import {EditItem} from "../../../components/EditItem";
 import {AddItemForm} from "../../../components/AddItemForm";
 import {TaskRedux} from "./Task/TaskRedux";
-import {AppDispatch} from "../../../app/store";
+import {useActions} from "../../../app/store";
 import {TaskStatuses} from "../../../api/todolist-api";
-import {fetchTasks, TaskDomainType} from "./tasks-reducer";
+import {TaskDomainType} from "./tasks-reducer";
 import {RequestStatusType} from "../../../app/appReducer";
 import {FilterValuesType} from "../TodolistList";
+import {taskActions} from "../index";
 
 type TodoListPropsType = {
   todoListId: string
   title: string
   tasks: Array<TaskDomainType>
   filter: FilterValuesType
-  removeTask: (taskId: string, todoListId: string) => void
+  removeTask: (params: {taskId: string, todolistId: string}) => void
   changeTodoListFilter: (filter: FilterValuesType, todoListId: string) => void
-  addTask: (title: string, todoListId: string) => void
-  removeTodoList: (todoListId: string) => void
-  editTodolist: (todoListId: string, newTitle: string) => void
+  addTask: (params: {title: string, todolistId: string}) => void
+  removeTodoList: (params: {todolistId: string}) => void
+  editTodolist: (params: {todolistId: string, title: string}) => void
   entityStatus: RequestStatusType
 }
 
 
 const TodoList = React.memo(function (props: TodoListPropsType) {
 
-  const dispatch = AppDispatch();
-
+  const {fetchTasks} = useActions(taskActions)
 
   useEffect(() => {
-    dispatch(fetchTasks(props.todoListId))
+    fetchTasks(props.todoListId)
   }, [fetchTasks, props.todoListId])
 
   let tasks = props.tasks;
@@ -48,16 +48,15 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
   const onCompletedClickHandler = useCallback(() => props.changeTodoListFilter("completed", props.todoListId), [])
 
 
-  const removeTodoList = () => props.removeTodoList(props.todoListId)
+  const removeTodoList = () => props.removeTodoList({todolistId: props.todoListId})
 
   const addTaskHandler = useCallback((title: string) => {
-    props.addTask(title, props.todoListId)
+    props.addTask({title, todolistId: props.todoListId})
   }, [props.addTask, props.todoListId])
 
   const editTodolist = useCallback((title: string) => {
-    props.editTodolist(props.todoListId, title)
+    props.editTodolist({todolistId: props.todoListId, title: title})
   }, [props.editTodolist, props.todoListId])
-
 
 
   return (

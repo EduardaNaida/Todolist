@@ -3,33 +3,32 @@ import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {EditItem} from "../../../../components/EditItem";
 import BackspaceIcon from "@material-ui/icons/Backspace";
 import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
-import {updateTask} from "../tasks-reducer";
-import {AppDispatch} from "../../../../app/store";
+import {AppDispatch, useActions} from "../../../../app/store";
+import {taskActions} from "../../index";
 
 export type TaskPropsTypeRedux = {
-    tasks: TaskType
-    todolistId: string
-    removeTask: (taskId: string, todolistId: string) => void
+  tasks: TaskType
+  todolistId: string
+  removeTask: (params: {taskId: string, todolistId: string}) => void
 
 }
-export const TaskRedux: FC<TaskPropsTypeRedux> =({
-                                                      tasks,
-                                                      todolistId,
-                                                      removeTask
+export const TaskRedux: FC<TaskPropsTypeRedux> = ({
+                                                    tasks,
+                                                    todolistId,
+                                                    removeTask
                                                   }) => {
 
 
-
   const {entityStatus} = tasks;
-  const dispatch = AppDispatch();
 
-    const onClickHandler = () => removeTask(tasks.id, todolistId)
+  const {updateTask} = useActions(taskActions)
+
+  const onClickHandler = () => removeTask({taskId: tasks.id, todolistId})
 
   const editTask = useCallback(
     (newTitle: string) => {
-      const newTask = { ...tasks, title: newTitle };
-
-      dispatch(updateTask(newTask));
+      const newTask = {...tasks, title: newTitle};
+      updateTask(newTask);
     },
     [updateTask, tasks]
   );
@@ -41,31 +40,31 @@ export const TaskRedux: FC<TaskPropsTypeRedux> =({
         status: e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New,
       };
 
-      dispatch(updateTask(newTask));
+      updateTask(newTask);
     },
     [updateTask, tasks]
   );
-    return (
-        <div>
-            <ListItem
-                key={tasks.id}
-                style={{
-                    padding: '0px',
-                    justifyContent: 'space-between',
-                    textDecoration: tasks.status ? "line-through" : "none"
-                }}
-                className={tasks.status === TaskStatuses.Completed ? "isDone" : "notIsDone"}>
-                <Checkbox
-                    color={'primary'}
-                    onChange={changeTaskStatus}
-                    checked={tasks.status === TaskStatuses.Completed}
-                    disabled={entityStatus === 'loading'}
-                />
-                <EditItem title={tasks.title} callback={editTask} disabled={entityStatus === 'loading'}/>
-                <IconButton size={'small'} onClick={onClickHandler} disabled={entityStatus === 'loading'}>
-                    <BackspaceIcon/>
-                </IconButton>
-            </ListItem>
-        </div>
-    );
+  return (
+    <div>
+      <ListItem
+        key={tasks.id}
+        style={{
+          padding: '0px',
+          justifyContent: 'space-between',
+          textDecoration: tasks.status ? "line-through" : "none"
+        }}
+        className={tasks.status === TaskStatuses.Completed ? "isDone" : "notIsDone"}>
+        <Checkbox
+          color={'primary'}
+          onChange={changeTaskStatus}
+          checked={tasks.status === TaskStatuses.Completed}
+          disabled={entityStatus === 'loading'}
+        />
+        <EditItem title={tasks.title} callback={editTask} disabled={entityStatus === 'loading'}/>
+        <IconButton size={'small'} onClick={onClickHandler} disabled={entityStatus === 'loading'}>
+          <BackspaceIcon/>
+        </IconButton>
+      </ListItem>
+    </div>
+  );
 };

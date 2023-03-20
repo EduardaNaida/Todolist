@@ -3,7 +3,7 @@ import AddIcon from '@material-ui/icons/Add';
 import {IconButton, TextField} from "@material-ui/core";
 
 type InputPropsType = {
-    callback: (title: string) => void
+    callback: (params: {title: string}) => void
 }
 
 export const Input = (props: InputPropsType) => {
@@ -18,7 +18,7 @@ export const Input = (props: InputPropsType) => {
     const addTask = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle !== "") {
-            props.callback(trimmedTitle)
+            props.callback({title: trimmedTitle})
         } else {
             setError(true)
         }
