@@ -1,16 +1,12 @@
-import { tasksReducer } from "../store/tasks-reducer";
-import { todolistReducer } from "../store/todolist-reducer";
-import {
-  AnyAction,
-  applyMiddleware,
-  combineReducers,
-  legacy_createStore,
-} from "redux";
-import thunk, { ThunkDispatch } from "redux-thunk";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { appReducer } from "./appReducer";
-import { authReducer } from "../store/authReducer";
-import { configureStore } from "@reduxjs/toolkit";
+import {tasksReducer} from "../features/TodolistList/Todolist/tasks-reducer";
+import {todolistReducer} from "../features/TodolistList/todolist-reducer";
+import {ActionCreatorsMapObject, AnyAction, bindActionCreators, combineReducers,} from "redux";
+import thunk, {ThunkDispatch} from "redux-thunk";
+import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import {appReducer} from "./appReducer";
+import {authReducer} from "../store/authReducer";
+import {configureStore} from "@reduxjs/toolkit";
+import {useMemo} from "react";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -38,3 +34,11 @@ export const AppDispatch = () => useDispatch<AppDispatchType>();
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore
 window.store = store;
+
+export function useActions<T extends ActionCreatorsMapObject<any>>(actions: T) {
+  const dispatch = AppDispatch()
+
+  return useMemo(() => {
+    return bindActionCreators(actions, dispatch)
+  }, []);
+}

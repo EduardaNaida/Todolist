@@ -3,21 +3,22 @@ import "../../app/App.css";
 import { Input } from "../../components/Input";
 import { Grid, Paper } from "@material-ui/core";
 import {
-  ChangeTodolistAC, changeTodolistTitle, createTodolist, getTodolist, removeTodolist,
+  ChangeTodolistAC,
   TodolistDomainType,
-} from "../../store/todolist-reducer";
-import {
-  addTasks, removeTasks,
-} from "../../store/tasks-reducer";
-import { AppDispatch, AppRootStateType, UseAppSelector } from "../../app/store";
+} from "./todolist-reducer";
+import {AppDispatch, AppRootStateType, useActions, UseAppSelector} from "../../app/store";
 import TodoList from "./Todolist/TodoList";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import {taskActions, todolistActions} from "./index";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
 function TodolistList() {
   const dispatch = AppDispatch();
+
+  const {removeTasks, addTasks} = useActions(taskActions)
+  const {removeTodolist, getTodolist, createTodolist, changeTodolistTitle} = useActions(todolistActions)
 
   const isLoggedIn = useSelector<AppRootStateType, boolean>(
     (state) => state.auth.isLoggedIn
@@ -28,7 +29,7 @@ function TodolistList() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      dispatch(getTodolist());
+      getTodolist();
     }
   }, []);
 
@@ -36,12 +37,12 @@ function TodolistList() {
 
   //Tasks
   const removeTask = useCallback((taskId: string, todolistId: string) => {
-    dispatch(removeTasks({ taskId, todolistId }));
+    removeTasks({ taskId, todolistId });
   }, []);
 
 
   const addTask = useCallback((title: string, todoListId: string) => {
-    dispatch(addTasks({ todolistId: todoListId, title: title }));
+    addTasks({ todolistId: todoListId, title: title });
   }, []);
 
   //TodolistList
@@ -53,24 +54,24 @@ function TodolistList() {
   );
   const removeTodoList = useCallback(
     (todolistId: string) => {
-      dispatch(removeTodolist({todolistId}));
+      removeTodolist({todolistId});
       delete tasks[todolistId];
     },
-    [dispatch]
+    []
   );
 
   const editTodolist = useCallback(
     (todolistId: string, title: string) => {
-      dispatch(changeTodolistTitle({todolistId, title}));
+      changeTodolistTitle({todolistId, title});
     },
-    [dispatch]
+    []
   );
 
   const addTodolist = useCallback(
     (newTitle: string) => {
-      dispatch(createTodolist({title: newTitle}));
+      createTodolist({title: newTitle});
     },
-    [dispatch]
+    []
   );
 
   //GUI:

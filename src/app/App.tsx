@@ -11,13 +11,15 @@ import {Container} from "@material-ui/core";
 import {useSelector} from "react-redux";
 import {initializeApp} from "./appReducer";
 import {logoutTC} from "../store/authReducer";
+import {authSelector} from "../features/Login";
+import {selectIsInitialized, selectStatus} from "./selectors";
 
 
 export const App = () => {
 
-  const status = UseAppSelector(state => state.app.status)
-  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
-  const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+  const status = useSelector(selectStatus)
+  const isLoggedIn = useSelector(authSelector.selectIsLoggedIn)
+  const isInitialized = useSelector(selectIsInitialized)
 
   const dispatch = AppDispatch();
 

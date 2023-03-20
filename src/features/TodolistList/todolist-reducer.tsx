@@ -1,9 +1,9 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios, {AxiosError} from "axios";
-import {todolistAPI, TodoListType} from "../api/todolist-api";
-import {RequestStatusType, setAppStatusAC} from "../app/appReducer";
-import {FilterValuesType} from "../features/TodolistList/TodolistList";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {todolistAPI, TodoListType} from "../../api/todolist-api";
+import {RequestStatusType, setAppStatusAC} from "../../app/appReducer";
+import {FilterValuesType} from "./TodolistList";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 export type TodolistDomainType = TodoListType & {
   filter: FilterValuesType

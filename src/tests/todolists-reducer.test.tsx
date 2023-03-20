@@ -4,9 +4,9 @@ import {
     ChangeTodolistAC,
     TodolistDomainType,
     todolistReducer
-} from "../store/todolist-reducer";
+} from "../features/TodolistList/todolist-reducer";
 import {FilterValuesType} from "../features/TodolistList/TodolistList";
-import { changeTaskEntityStatusAC } from "../store/tasks-reducer";
+import { changeTaskEntityStatusAC } from "../features/TodolistList/Todolist/tasks-reducer";
 import { RequestStatusType } from "../app/appReducer";
 
 let todolistId1: string;

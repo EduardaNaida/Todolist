@@ -3,8 +3,8 @@ import {AppRootStateType} from "../app/store";
 import React from "react";
 import { combineReducers, createStore } from 'redux'
 import { v1 } from 'uuid'
-import {tasksReducer} from "./tasks-reducer";
-import {todolistReducer} from "./todolist-reducer";
+import {tasksReducer} from "../features/TodolistList/Todolist/tasks-reducer";
+import {todolistReducer} from "../features/TodolistList/todolist-reducer";
 
 
 const rootReducer = combineReducers({

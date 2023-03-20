@@ -7,11 +7,12 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {AppDispatch, AppRootStateType} from "../../app/store";
+import {AppDispatch} from "../../app/store";
 import {login} from "../../store/authReducer";
 import {FormikHelpers, useFormik} from "formik";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
+import {selectIsLoggedIn} from "./selectors";
 
 type FormikErrorType = {
   email?: string
@@ -62,7 +63,7 @@ export const Login = () => {
     },
   })
 
-  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+  const isLoggedIn = useSelector(selectIsLoggedIn)
 
   if (isLoggedIn) {
     return <Navigate to={'/Todolist/'}/>

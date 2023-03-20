@@ -3,7 +3,7 @@ import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {EditItem} from "../../../../components/EditItem";
 import BackspaceIcon from "@material-ui/icons/Backspace";
 import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
-import {updateTask} from "../../../../store/tasks-reducer";
+import {updateTask} from "../tasks-reducer";
 import {AppDispatch} from "../../../../app/store";
 
 export type TaskPropsTypeRedux = {

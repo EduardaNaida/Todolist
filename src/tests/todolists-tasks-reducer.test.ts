@@ -1,5 +1,5 @@
-import { TodolistDomainType, todolistReducer} from "../store/todolist-reducer";
-import {tasksReducer} from "../store/tasks-reducer";
+import { TodolistDomainType, todolistReducer} from "../features/TodolistList/todolist-reducer";
+import {tasksReducer} from "../features/TodolistList/Todolist/tasks-reducer";
 import {v1} from "uuid";
 // import {TasksStateType} from "../app/TodolistList";
 
