@@ -7,8 +7,7 @@ import {
   TodolistDomainType,
 } from "../../store/todolist-reducer";
 import {
-  addTaskThunk,
-  removeTasksThunk,
+  addTasks, removeTasks,
 } from "../../store/tasks-reducer";
 import { AppDispatch, AppRootStateType, UseAppSelector } from "../../app/store";
 import TodoList from "./Todolist/TodoList";
@@ -37,12 +36,12 @@ function TodolistList() {
 
   //Tasks
   const removeTask = useCallback((taskId: string, todolistId: string) => {
-    dispatch(removeTasksThunk({ taskId, todolistId }));
+    dispatch(removeTasks({ taskId, todolistId }));
   }, []);
 
 
   const addTask = useCallback((title: string, todoListId: string) => {
-    dispatch(addTaskThunk({ todolistId: todoListId, title: title }));
+    dispatch(addTasks({ todolistId: todoListId, title: title }));
   }, []);
 
   //TodolistList

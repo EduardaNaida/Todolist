@@ -9,7 +9,7 @@ import {Header} from "../components/Header";
 import {CircularProgress, LinearProgress} from "@mui/material";
 import {Container} from "@material-ui/core";
 import {useSelector} from "react-redux";
-import {initializeAppTC} from "./appReducer";
+import {initializeApp} from "./appReducer";
 import {logoutTC} from "../store/authReducer";
 
 
@@ -22,7 +22,7 @@ export const App = () => {
   const dispatch = AppDispatch();
 
   useEffect(() => {
-    dispatch(initializeAppTC())
+    dispatch(initializeApp())
   }, [])
 
   if (!isInitialized) {

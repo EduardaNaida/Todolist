@@ -12,8 +12,8 @@ const initialState = {
   isInitialized: false
 }
 
-export const initializeAppTC = createAsyncThunk(
-  "app/initializeAppTC",
+export const initializeApp = createAsyncThunk(
+  "app/initializeApp",
   async (payload, {dispatch, rejectWithValue}) => {
 
     dispatch(setAppStatusAC({value: 'loading'}))
@@ -24,16 +24,16 @@ export const initializeAppTC = createAsyncThunk(
         dispatch(setAppStatusAC({value: 'succeeded'}))
       } else {
         handleServerAppError(dispatch, res.data)
+        return rejectWithValue({})
       }
-    }
-    catch (error) {
+    } catch (error) {
       if (axios.isAxiosError<AxiosError<{ message: string }>>(error)) {
         const err = error.response ? error.response.data.message : error.message
         handleServerNetworkError(dispatch, err);
+        return rejectWithValue({})
       }
-    }
-    finally {
-      dispatch(setIsInitializedAC({value: true}))
+      return rejectWithValue({})
+    } finally {
       dispatch(setAppStatusAC({value: 'succeeded'}))
     }
   }
@@ -43,19 +43,22 @@ const slice = createSlice({
   name: 'app',
   initialState: initialState,
   reducers: {
-    setAppStatusAC(state, action: PayloadAction<{value: RequestStatusType}>){
+    setAppStatusAC(state, action: PayloadAction<{ value: RequestStatusType }>) {
       state.status = action.payload.value;
     },
-    setAppErrorAC(state, action: PayloadAction<{value: string | null}>) {
+    setAppErrorAC(state, action: PayloadAction<{ value: string | null }>) {
       state.error = action.payload.value;
-    },
-    setIsInitializedAC(state, action: PayloadAction<{value: boolean}>) {
-      state.isInitialized = action.payload.value;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(initializeApp.fulfilled, (state, action) => {
+        state.isInitialized = true;
+      })
   }
 })
 
-export const {setAppStatusAC, setAppErrorAC, setIsInitializedAC} = slice.actions;
+export const {setAppStatusAC, setAppErrorAC} = slice.actions;
 
 export const appReducer = slice.reducer;
 

@@ -3,7 +3,7 @@ import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {EditItem} from "../../../../components/EditItem";
 import BackspaceIcon from "@material-ui/icons/Backspace";
 import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
-import {updateTaskThunk} from "../../../../store/tasks-reducer";
+import {updateTask} from "../../../../store/tasks-reducer";
 import {AppDispatch} from "../../../../app/store";
 
 export type TaskPropsTypeRedux = {
@@ -29,9 +29,9 @@ export const TaskRedux: FC<TaskPropsTypeRedux> =({
     (newTitle: string) => {
       const newTask = { ...tasks, title: newTitle };
 
-      dispatch(updateTaskThunk(newTask));
+      dispatch(updateTask(newTask));
     },
-    [updateTaskThunk, tasks]
+    [updateTask, tasks]
   );
   const changeTaskStatus = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,9 +41,9 @@ export const TaskRedux: FC<TaskPropsTypeRedux> =({
         status: e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New,
       };
 
-      dispatch(updateTaskThunk(newTask));
+      dispatch(updateTask(newTask));
     },
-    [updateTaskThunk, tasks]
+    [updateTask, tasks]
   );
     return (
         <div>
