@@ -1,4 +1,5 @@
 import {
+  FieldErrorType,
   taskAPI,
   TaskType, UpdateTaskModelType,
 } from "../../../api/todolist-api";
@@ -84,20 +85,22 @@ export const removeTasks = createAsyncThunk(
   }
 );
 
-export const addTasks = createAsyncThunk(
+export const addTasks = createAsyncThunk<TaskType,
+  { todolistId: string; title: string },
+  { rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> } }>(
   "tasks/addTasks",
-  async (payload: { todolistId: string; title: string }, thunkAPI) => {
+  async (payload, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({value: "loading"}));
 
     try {
-      const res = await taskAPI.createTask(payload.todolistId, payload.title);
-      if (res.data.resultCode === Result_Code.SUCCESS) {
+      const response = await taskAPI.createTask(payload.todolistId, payload.title);
+      if (response.data.resultCode === Result_Code.SUCCESS) {
         thunkAPI.dispatch(setAppStatusAC({value: "succeeded"}));
-        return res.data.data.item
+        return response.data.data.item
       } else {
-        handleServerAppError<{ item: TaskType }>(thunkAPI.dispatch, res.data);
+        handleServerAppError<{ item: TaskType }>(thunkAPI.dispatch, response.data);
         thunkAPI.dispatch(setAppStatusAC({value: "failed"}));
-        return thunkAPI.rejectWithValue(null)
+        return thunkAPI.rejectWithValue({errors: response.data.messages, fieldsErrors: response.data.fieldsErrors})
       }
     } catch (error) {
       if (axios.isAxiosError<AxiosError<{ message: string }>>(error)) {
@@ -105,9 +108,10 @@ export const addTasks = createAsyncThunk(
           ? error.response.data.message
           : error.message;
         handleServerNetworkError(thunkAPI.dispatch, err);
-        return thunkAPI.rejectWithValue(null)
+        return thunkAPI.rejectWithValue({errors: [err], fieldsErrors: undefined})
+      } else {
+        return thunkAPI.rejectWithValue({errors: ['error'], fieldsErrors: undefined})
       }
-      return thunkAPI.rejectWithValue(null)
     }
   }
 );

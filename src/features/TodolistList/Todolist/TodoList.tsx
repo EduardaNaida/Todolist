@@ -4,12 +4,13 @@ import BackspaceIcon from '@material-ui/icons/Backspace';
 import {EditItem} from "../../../components/EditItem";
 import {AddItemForm} from "../../../components/AddItemForm";
 import {TaskRedux} from "./Task/TaskRedux";
-import {useActions} from "../../../app/store";
+import {AppDispatch, useActions} from "../../../app/store";
 import {TaskStatuses} from "../../../api/todolist-api";
 import {TaskDomainType} from "./tasks-reducer";
 import {RequestStatusType} from "../../../app/appReducer";
 import {FilterValuesType} from "../TodolistList";
 import {taskActions, todolistActions} from "../index";
+import {login} from "../../Login/authReducer";
 
 type TodoListPropsType = {
   todoListId: string
@@ -22,6 +23,7 @@ type TodoListPropsType = {
 
 const TodoList = React.memo(function (props: TodoListPropsType) {
 
+  const dispatch = AppDispatch();
   const {fetchTasks, addTasks} = useActions(taskActions)
   const {changeTodolistAC, removeTodolist, changeTodolistTitle} = useActions(todolistActions)
 
@@ -46,8 +48,17 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
 
   const removeTodoList = () => removeTodolist({todolistId: props.todoListId})
 
-  const addTaskHandler = useCallback((title: string) => {
-    addTasks({title, todolistId: props.todoListId})
+  const addTaskHandler = useCallback(async (title: string) => {
+    const action = await dispatch(taskActions.addTasks({title, todolistId: props.todoListId}))
+
+    if (taskActions.addTasks.rejected.match(action)) {
+      if (action.payload?.fieldsErrors?.length) {
+        const error = action.payload?.fieldsErrors[0]
+        throw new Error(error.error)
+      } else {
+        throw new Error(action.payload?.errors[0])
+      }
+    }
   }, [addTasks, props.todoListId])
 
   const editTodolist = useCallback((title: string) => {

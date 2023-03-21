@@ -23,8 +23,12 @@ const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...
 
 export const AddItemFormStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
+
+const asyncCallback = async (...params: any[]) => {
+  action('Button clicked')(...params)
+}
 AddItemFormStory.args = {
-  addItem: action('Button clicked')
+  addItem: asyncCallback
 };
 
 const TemplateWithError: ComponentStory<typeof AddItemForm> = (args) => {

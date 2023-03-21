@@ -11,9 +11,5 @@ export const handleServerAppError = <T>(
   dispatch: Dispatch,
   data: ResponseType<T>
 ) => {
-  if (data.messages.length) {
-    dispatch(setAppErrorAC({ value: data.messages[0] }));
-  } else {
-    dispatch(setAppErrorAC({ value: "Some error" }));
-  }
+  dispatch(setAppErrorAC({value: data.messages.length ? data.messages[0] : 'Some error'}))
 };

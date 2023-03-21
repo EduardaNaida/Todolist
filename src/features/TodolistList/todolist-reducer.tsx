@@ -48,7 +48,6 @@ export const createTodolist = createAsyncThunk(
       if (response.data.resultCode === 0) {
         const item = response.data.data.item
         dispatch(setAppStatusAC({value: 'succeeded'}))
-        // dispatch(AddTodolistAC({todolist: item}))
         return {todolist: item}
       } else {
         handleServerAppError<{ item: TodoListType }>(dispatch, response.data)
@@ -105,9 +104,15 @@ export const changeTodolistTitle = createAsyncThunk(
     try {
       dispatch(setAppStatusAC({value: 'loading'}))
       const response = await todolistAPI.updateTodolist(payload.todolistId, payload.title);
-      dispatch(setAppStatusAC({value: 'succeeded'}))
-      dispatch(changeTodolistEntityStatusAC({id: payload.todolistId, status: 'succeeded'}))
-      return {id: payload.todolistId, title: payload.title}
+      if (response.data.resultCode === 0){
+        dispatch(setAppStatusAC({value: 'succeeded'}))
+        dispatch(changeTodolistEntityStatusAC({id: payload.todolistId, status: 'succeeded'}))
+        return {id: payload.todolistId, title: payload.title}
+      } else {
+        handleServerAppError<{ item: TodoListType }>(dispatch, response.data)
+        dispatch(setAppStatusAC({value: 'failed'}))
+        return rejectWithValue(null)
+      }
     } catch (error) {
       if (axios.isAxiosError<AxiosError<{ message: string }>>(error)) {
         const err = error.response
@@ -117,8 +122,6 @@ export const changeTodolistTitle = createAsyncThunk(
         return rejectWithValue(null)
       }
       return rejectWithValue(null)
-    } finally {
-      dispatch(setAppStatusAC({value: 'succeeded'}))
     }
   }
 );

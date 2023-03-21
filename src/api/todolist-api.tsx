@@ -94,7 +94,7 @@ const instance = axios.create({
 
 export const todolistAPI = {
   updateTodolist(todolistId: string, title: string) {
-    return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`todo-lists/${todolistId}`, {title: title})
+    return instance.put<{ title: string }, AxiosResponse<ResponseType<{ item: TodoListType }>>>(`todo-lists/${todolistId}`, {title: title})
   },
   getTodolist() {
     return instance.get<Array<TodoListType>>('todo-lists')
