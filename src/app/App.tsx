@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {Navigate, Route, Routes} from "react-router-dom";
-import {AppDispatch, AppRootStateType, UseAppSelector} from "./store";
-import TodolistList from "../features/TodolistList/TodolistList";
-import {Login} from "../features/Login/Login";
+import {AppDispatch} from "./store";
+import {TodolistList} from "../features/TodolistList";
+import {Login} from "../features/Login";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
 import {Header} from "../components/Header";
 import {CircularProgress, LinearProgress} from "@mui/material";
 import {Container} from "@material-ui/core";
 import {useSelector} from "react-redux";
 import {initializeApp} from "./appReducer";
-import {logoutTC} from "../store/authReducer";
+import {logoutTC} from "../features/Login/authReducer";
 import {authSelector} from "../features/Login";
 import {selectIsInitialized, selectStatus} from "./selectors";
 
@@ -34,14 +34,14 @@ export const App = () => {
     </div>
   }
 
-  const logout = () => {
+  const logoutHandler = () => {
     dispatch(logoutTC())
   }
 
   return (
     <div className="App">
       <ErrorSnackbar/>
-      <Header isAuth={isLoggedIn} name={''} logout={logout}/>
+      <Header isAuth={isLoggedIn} name={''} logout={logoutHandler}/>
       {status === 'loading' && <LinearProgress color="secondary"/>}
       <Container fixed>
         <Routes>

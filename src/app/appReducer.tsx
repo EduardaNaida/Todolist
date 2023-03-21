@@ -1,5 +1,5 @@
 import {authAPI} from "../api/todolist-api";
-import {setIsLoggedInAC} from "../store/authReducer";
+import {setIsLoggedInAC} from "../features/Login/authReducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";

@@ -6,10 +6,10 @@ import {
   TodolistDomainType,
 } from "./todolist-reducer";
 import {AppRootStateType, useActions, UseAppSelector} from "../../app/store";
-import TodoList from "./Todolist/TodoList";
+import {TodoList} from "./Todolist/";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
-import {taskActions, todolistActions} from "./index";
+import {todolistActions} from "./index";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -31,14 +31,14 @@ function TodolistList() {
     if (isLoggedIn) {
       getTodolist();
     }
-  }, []);
+  }, [getTodolist]);
 
   const tasks = UseAppSelector((state) => state.tasks);
 
   const todoListComponents = todoLists.map((tl) => {
     return (
       <Grid item key={tl.id}>
-        <Paper style={{width: "250px", padding: "20px"}}>
+        <div style={{width: "300px"}}>
           <TodoList
             title={tl.title}
             filter={tl.filter}
@@ -46,7 +46,7 @@ function TodolistList() {
             tasks={tasks[tl.id]}
             entityStatus={tl.entityStatus}
           />
-        </Paper>
+        </div>
       </Grid>
     );
   });
@@ -60,7 +60,7 @@ function TodolistList() {
       <Grid container style={{padding: "20px"}}>
         <Input callback={createTodolist}/>
       </Grid>
-      <Grid container spacing={5}>
+      <Grid container spacing={5} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
         {todoListComponents}
       </Grid>
     </div>

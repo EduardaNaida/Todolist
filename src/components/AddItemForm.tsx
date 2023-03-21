@@ -34,17 +34,18 @@ export const AddItemForm  = memo((props: AddItemFormPropsType) => {
         }
     }
 
-    return <div>
+    return <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <TextField variant="outlined"
                    error={!!error}
                    value={title}
+                   size={'small'}
                    onChange={onChangeHandler}
                    onKeyPress={onKeyPressHandler}
                    label="Title"
                    helperText={error}
                    disabled={props.disabled}
         />
-        <IconButton color="primary" onClick={addItem} disabled={props.disabled}>
+        <IconButton color="primary" onClick={addItem} disabled={props.disabled} style={{marginLeft: '8px'}}>
             <AddBox />
         </IconButton>
     </div>

@@ -1,9 +1,9 @@
-import {setAppStatusAC} from "../app/appReducer";
-import {authAPI, FieldErrorType, LoginParamsType} from "../api/todolist-api";
+import {setAppStatusAC} from "../../app/appReducer";
+import {authAPI, FieldErrorType, LoginParamsType} from "../../api/todolist-api";
 import {
   handleServerAppError,
   handleServerNetworkError,
-} from "../utils/error-utils";
+} from "../../utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
@@ -63,8 +63,11 @@ export const logoutTC = createAsyncThunk(
     }
   })
 
-
-const slice = createSlice({
+export const asyncActions = {
+  login,
+  logoutTC
+}
+export const slice = createSlice({
   name: "auth",
   initialState: {isLoggedIn: false},
   reducers: {

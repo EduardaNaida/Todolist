@@ -4,7 +4,7 @@ import {ActionCreatorsMapObject, AnyAction, bindActionCreators, combineReducers,
 import thunk, {ThunkDispatch} from "redux-thunk";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./appReducer";
-import {authReducer} from "../store/authReducer";
+import {authReducer} from "../features/Login/authReducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {useMemo} from "react";
 

@@ -5,7 +5,7 @@ import {
 import {RequestStatusType, setAppStatusAC} from "../../../app/appReducer";
 
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {createTodolist, getTodolist, removeTodolist} from "../todolist-reducer";
+import {asyncActions as todolistAsyncActions} from '../todolist-reducer'
 import axios, {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-utils";
 
@@ -183,15 +183,15 @@ export const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createTodolist.fulfilled, (state, action) => {
+      .addCase(todolistAsyncActions.createTodolist.fulfilled, (state, action) => {
         state[action.payload.todolist.id] = [];
       })
-      .addCase(getTodolist.fulfilled, (state, action) => {
+      .addCase(todolistAsyncActions.getTodolist.fulfilled, (state, action) => {
         action.payload.todolists.forEach((tl: any) => {
           state[tl.id] = [];
         });
       })
-      .addCase(removeTodolist.fulfilled, (state, action) => {
+      .addCase(todolistAsyncActions.removeTodolist.fulfilled, (state, action) => {
         delete state[action.payload.todolistId];
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {

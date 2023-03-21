@@ -1,5 +1,5 @@
 import React, {useCallback, memo, useEffect} from 'react';
-import {Button, IconButton, Typography, PropTypes} from "@material-ui/core";
+import {Button, IconButton, Typography, PropTypes, Paper} from "@material-ui/core";
 import BackspaceIcon from '@material-ui/icons/Backspace';
 import {EditItem} from "../../../components/EditItem";
 import {AddItemForm} from "../../../components/AddItemForm";
@@ -22,7 +22,7 @@ type TodoListPropsType = {
 
 const TodoList = React.memo(function (props: TodoListPropsType) {
 
-  const {fetchTasks, addTasks, removeTasks} = useActions(taskActions)
+  const {fetchTasks, addTasks} = useActions(taskActions)
   const {changeTodolistAC, removeTodolist, changeTodolistTitle} = useActions(todolistActions)
 
   useEffect(() => {
@@ -56,17 +56,19 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
 
 
   return (
-    <div style={{width: '250px'}}>
+    <Paper style={{position: 'relative', padding: "20px"}}>
+      <IconButton size={'small'} onClick={removeTodoList} disabled={props.entityStatus === 'loading'}
+                  style={{position: 'absolute', right: '5px', top: '5px'}}>
+        <BackspaceIcon/>
+      </IconButton>
+
       <Typography
         variant={'h5'}
         align={'center'}
-        style={{fontWeight: 'bold'}}
+        style={{fontWeight: 'bold', marginBottom: '10px'}}
         color={'primary'}
       >
         <EditItem title={props.title} callback={editTodolist} disabled={props.entityStatus === 'loading'}/>
-        <IconButton size={'small'} onClick={removeTodoList} disabled={props.entityStatus === 'loading'}>
-          <BackspaceIcon/>
-        </IconButton>
       </Typography>
 
       <AddItemForm addItem={addTaskHandler} disabled={props.entityStatus === 'loading'}/>
@@ -78,7 +80,10 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
         />
 
       })}
-      <div>
+
+        {!tasks.length && <div style={{margin: '15px 0 15px 4px', color: 'grey'}}>No tasks</div>}
+
+      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
         <ButtonWithMemo
           variant={'contained'}
           color={props.filter === "all" ? "secondary" : 'primary'}
@@ -104,7 +109,7 @@ const TodoList = React.memo(function (props: TodoListPropsType) {
           title={'Completed'}
         />
       </div>
-    </div>
+    </Paper>
   );
 });
 
